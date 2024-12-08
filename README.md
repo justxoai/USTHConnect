@@ -19,13 +19,24 @@
 
 + Setup comment
 
-+ Logic StudyBuddy => Register => Pre-Preccessing => StudyBuddy =>
++ Logic StudyBuddy => Register => Pre-Preccessing => StudyBuddy => Activity Study Buddy
+
++ Compare/Update Login and Register
+
++ Admin create Account: usth email, ID and Sip account
+
++ Check gradle of Linphone
+
++ StudyBuddy register: cần ttin và tạo 1 column để chứa id của SIP (cái để call cho nhau)
 
 ### Today
++ PushNotification: Có vde: Chạy tutorial gặp vde; Giải pháp: Chưa có
+
++ Outgoing call & Incoming call ( Create another account to call from 2 emulator machine: hoaianhngx(1234567890) & )
+
++ Chat
 
 ### Tomorow
-+ Model của Việt
-
-+ Xem usecase
-
 + Audio Call
+
++ Testing Readme branch callingapp
