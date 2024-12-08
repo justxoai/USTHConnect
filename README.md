@@ -1,42 +1,24 @@
-### USTHConnect FrontEnd ###
+### Calling_App ###
 
 ### Complete:
-- UI for: Home(except Notification), Schedule, Campus, Resource, StudyBuddy(except StudyBuddy and Message) Login
-- RecyclerView & SearchView: Campus, Schedule, Resource
-- Set Image for profile but use URL
+- Code chuyển từ OutgoingCall và IncomingCall từ Kotlin sang Java
+- Khác mạng ok: Từ nhà justxoai đến nhà dmq
 
-### In Progress:
-- Continue: StudyBuddy UI, cần dùng 1 component: bấm vào để sang trái phải, áp dụng cho lịch, bulding
-
-- Update edit profile and profile StudyBuddy: upgrade to use picture in phone
-
-- Notification: PushNotification: Tincoder
-
-- Click to add course to Favorite
+### Error :
+- Error 1: gọi dc cho quang, nghe dc quang nói nhg quang ko nghe dc: có lẽ do laptop xoài có vde
+- Error 2: Quang gọi cho xoài nhg ko hiển thị là có ng gọi nhg của quang thì có: chưa bt nguyên nhân
 
 ### Note:
-+ Chưa đổi đc tên các môn học trong từng Program: do Layout cứng 
++ Quang: cần quang test call từ đth và lap của quang
 
-+ Setup comment
++ 2 file đấy là OutgoingCall và IncomingCall nhé
 
-+ Logic StudyBuddy => Register => Pre-Preccessing => StudyBuddy => Activity Study Buddy
++ MainActivity là Activity gốc, t intent cho nó đến OutgoingCall
 
-+ Compare/Update Login and Register
++ T sẽ test sao cho cno bé lại và tiện lại: set thành string
 
-+ Admin create Account: usth email, ID and Sip account
++ Kiểm tra kỹ Manifest nếu dính lỗi FGS: t nghĩ: permision nào nó báo false thì tắt đi và ngc lại
 
-+ Check gradle of Linphone
++ check build gradle còn firebase thì có lẽ chưa dùng vì nó lquan đến pushnoti cơ 
 
-+ StudyBuddy register: cần ttin và tạo 1 column để chứa id của SIP (cái để call cho nhau)
-
-### Today
-+ PushNotification: Có vde: Chạy tutorial gặp vde; Giải pháp: Chưa có
-
-+ Outgoing call & Incoming call ( Create another account to call from 2 emulator machine: hoaianhngx(1234567890) & )
-
-+ Chat
-
-### Tomorow
-+ Audio Call
-
-+ Testing Readme branch callingapp
++ t chưa test hết nhg cái uses-permission và 1 vài cái indepent trong gradle
