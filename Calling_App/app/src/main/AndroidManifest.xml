@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!-- GPT -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+<!--    <uses-permission android:name="android.permission.SYSTEM_CAMERA" tools:ignore="ProtectedPermissions" />-->
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+
+
+    <!-- Linphone -->
+    <!-- To be able to display contacts list & match calling/called numbers -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- Starting Android 13 we need to ask notification permission -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Needed for full screen intent in incoming call notifications -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" /> <!-- To vibrate while receiving an incoming call -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--
+ Needed for foreground service
+    (https://developer.android.com/guide/components/foreground-services)
+    -->
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!--
+ Needed for Android 14
+    https://developer.android.com/about/versions/14/behavior-changes-14#fgs-types
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <!--
+ Required for foreground service started when a push is being received,
+    without it app won't be able to access network if data saver is ON (for example)
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!--
+ Needed to keep a permanent foreground service and keep app alive to be able to receive
+    messages & calls for third party accounts for which push notifications aren't available,
+    and starting Android 15 dataSync is limited to 6 hours per day
+    and can't be used with RECEIVE_BOOT_COMPLETED intent either
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" /> <!-- Needed for auto start at boot if keep alive service is enabled -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Calling_App"
+        tools:targetApi="31">
+        <activity
+            android:name=".IncomingCallActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OncomingCallActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Linphone.PushNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Linphone.BoxChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Linphone.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- The following is mandatory to have our SDK to handle push automatically -->
+        <service
+            android:name="org.linphone.core.tools.firebase.FirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> <!-- This is to handle the PUSH_RECEIVED broadcast emitted by our SDK upon push reception -->
+        <receiver
+            android:name=".Linphone.PushBroadcastReceiver"
+            android:exported="false"> <!-- True or False -->
+            <intent-filter>
+                <action android:name="org.linphone.core.action.PUSH_RECEIVED" />
+            </intent-filter>
+        </receiver> <!-- The following isn't mandatory but having a foreground service prevents Android to kill the app during a call -->
+        <!-- You can create your own service that inherits from this class for simplicity or handle the foreground service yourself -->
+<!--        <service-->
+<!--            android:name="org.linphone.core.tools.service.CoreService"-->
+<!--            android:foregroundServiceType="phoneCall|camera|microphone"-->
+<!--            android:stopWithTask="false" />-->
+    </application>
+
+</manifest>

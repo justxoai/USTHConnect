@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    tools:context=".Linphone.BoxChatActivity">
+
+    <TextView
+        android:id="@+id/registration_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/phone"/>
+
+    <RelativeLayout
+        android:id="@+id/call_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/registration_status">
+
+        <EditText
+            android:id="@+id/remote_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:hint="Remote SIP address"/>
+
+        <TextView
+            android:id="@+id/call_status"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/remote_address"/>
+
+        <Button
+            android:id="@+id/mute_mic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toggle mic"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/call_status"/>
+
+        <Button
+            android:id="@+id/toggle_speaker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toggle Speaker"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/call_status"/>
+
+        <Button
+            android:id="@+id/answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Answer"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"/>
+
+        <Button
+            android:id="@+id/hang_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hang up"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
