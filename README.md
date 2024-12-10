@@ -3,7 +3,9 @@
 ### Complete:
 - Code chuyển từ OutgoingCall và IncomingCall từ Kotlin sang Java
 - Khác mạng ok: Từ nhà justxoai đến nhà dmq
-- BoxChatActivity: Save đc user vào trong, khi nào có call đến mới hiện
+- BoxChatActivity: Có cả incoming call và outgoing call: call cho thẳng đến ng dùng trong boxchat
+(Account: ducduyvx - 1234567890; vietanhngx - 1234567890; quangminhdo - 1234567890)
+- Feature: đg ở boxchat khác, 1 ng khác call đến vẫn hiện ai gọi đến
 
 ### Error :
 - Error 1: gọi dc cho quang, nghe dc quang nói nhg quang ko nghe dc: có lẽ do laptop xoài có vde
@@ -18,8 +20,6 @@ nên nó có nhiều thay đổi
 + 2 file đấy là OutgoingCall và IncomingCall nhé
 
 + T sẽ test sao cho cno bé lại và tiện lại: set thành string
-
-+ Kiểm tra kỹ Manifest nếu dính lỗi FGS: t nghĩ: permision nào nó báo false thì tắt đi và ngc lại
 
 + check build gradle còn firebase thì có lẽ chưa dùng vì nó lquan đến pushnoti cơ 
 
