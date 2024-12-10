@@ -4,110 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ffffff">
+    android:background="#000000"
+    android:orientation="vertical">
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/outgoing_call_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_below="@id/registration_status"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/outgoing_remote_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Remote SIP address"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Register"
-                    android:textColor="#000000"
-                    android:gravity="center"
-                    android:textSize="33sp"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/outgoing_toggle_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="Video" />
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
+            <Button
+                android:id="@+id/outgoing_toggle_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="Camera" />
 
-                <!-- First Name -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editFirstName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="44dp"
-                    android:hint="Username"
-                    android:textColorHint="#000000"
-                    android:padding="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- Phone -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:hint="Phone number"
-                    android:textColorHint="#000000"
-                    android:inputType="phone"
-                    android:padding="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editFirstName" />
+            <Button
+                android:id="@+id/outgoing_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="Pause" />
 
-                <!-- Password -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:hint="Password"
-                    android:textColorHint="#000000"
-                    android:inputType="textPassword"
-                    android:padding="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editPhone" />
 
-                <!-- Sign Up Button -->
-                <Button
-                    android:id="@+id/RegisterForAccount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginEnd="32dp"
-                    android:backgroundTint="#0000ff"
-                    android:padding="10dp"
-                    android:text="Create"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-                    app:layout_constraintVertical_bias="0.257" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <Button
+                android:id="@+id/outgoing_hang_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="Hang" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <TextureView
+            android:id="@+id/outgoing_remote_video_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/button_layout"
+            android:layout_below="@id/outgoing_remote_address" />
+
+        <org.linphone.mediastream.video.capture.CaptureTextureView
+            android:id="@+id/outgoing_local_preview_video_surface"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_above="@id/button_layout"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
 
 </LinearLayout>

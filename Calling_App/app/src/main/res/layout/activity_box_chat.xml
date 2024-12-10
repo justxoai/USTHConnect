@@ -5,72 +5,215 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     android:orientation="vertical"
-    android:background="#ffffff"
     tools:context=".Linphone.BoxChatActivity">
 
-    <TextView
-        android:id="@+id/registration_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_margin="10dp">
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/phone"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
+            <TextView
+                android:id="@+id/box_chat_username"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="UserName"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:layout_marginRight="50dp"/>
+
+            <ImageButton
+                android:id="@+id/calling_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/phone"
+                android:backgroundTint="#ffffff" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/registration_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:id="@+id/outgoing_registration_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Incoming Call -->
     <RelativeLayout
-        android:id="@+id/call_layout"
-        android:visibility="gone"
+        android:id="@+id/incoming_call_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/registration_status">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <EditText
-            android:id="@+id/remote_address"
+        <!-- Header -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:hint="Remote SIP address"/>
+            android:orientation="vertical">
+
+            <!-- USTHConnect Aduio -->
+
+            <!-- Incoming Call -->
+            <TextView
+                android:id="@+id/incoming_remote_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Remote SIP address"
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/incoming_mute_mic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/incoming_answer"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp"
+            android:text="Mic"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/incoming_toggle_speaker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/incoming_hang_up"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60dp"
+            android:text="Speaker"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/incoming_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#0000ff"
+            android:text="Answer"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/incoming_hang_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="60dp"
+            android:backgroundTint="#ff0000"
+            android:text="Hang up"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <!-- OutgoingCall -->
+    <RelativeLayout
+        android:id="@+id/outgoing_call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/registration_status"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/call_status"
+            android:id="@+id/outgoing_remote_address"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/remote_address"/>
+            android:padding="10dp"
+            android:text="Remote SIP address"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/mute_mic"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Toggle mic"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/call_status"/>
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/toggle_speaker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Toggle Speaker"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/call_status"/>
+            <Button
+                android:id="@+id/outgoing_toggle_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Video"
+                android:visibility="gone" />
 
-        <Button
-            android:id="@+id/answer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Answer"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"/>
+            <Button
+                android:id="@+id/outgoing_toggle_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Camera"
+                android:visibility="gone" />
 
-        <Button
-            android:id="@+id/hang_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hang up"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"/>
+            <Button
+                android:id="@+id/outgoing_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Pause"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/outgoing_hang_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Hang"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextureView
+            android:id="@+id/outgoing_remote_video_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/button_layout"
+            android:layout_below="@id/outgoing_remote_address" />
+
+
+        <org.linphone.mediastream.video.capture.CaptureTextureView
+            android:id="@+id/outgoing_local_preview_video_surface"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_above="@id/button_layout"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
 
-
     <!-- Linphone -->
     <!-- To be able to display contacts list & match calling/called numbers -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- Starting Android 13 we need to ask notification permission -->

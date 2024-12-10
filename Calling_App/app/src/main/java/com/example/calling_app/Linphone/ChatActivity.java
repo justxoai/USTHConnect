@@ -11,8 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.calling_app.Linphone.BoxChat.BoxChatAdapter;
+import com.example.calling_app.Linphone.BoxChat.BoxChatItem;
 import com.example.calling_app.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -29,17 +36,17 @@ public class ChatActivity extends AppCompatActivity {
         username = intent.getStringExtra("sip_username");
         password = intent.getStringExtra("sip_password");
 
-        LinearLayout boxchat = findViewById(R.id.boxchat1);
-        boxchat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ChatActivity.this, BoxChatActivity.class);
+        RecyclerView recyclerView = findViewById(R.id.chat_recyclerview);
 
-                i.putExtra("sip_username", username);
-                i.putExtra("sip_password", password);
+        List<BoxChatItem> items = new ArrayList<>();
 
-                startActivity(i);
-            }
-        });
+        items.add(new BoxChatItem("ducduyvx", username, password));
+        items.add(new BoxChatItem("vietanhngx", username, password));
+        items.add(new BoxChatItem("quangminhdo", username, password));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BoxChatAdapter adapter = new BoxChatAdapter(this, items);
+        recyclerView.setAdapter(adapter);
+
     }
 }
