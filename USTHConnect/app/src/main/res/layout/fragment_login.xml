@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/testbackground"
     android:orientation="vertical"
     tools:context=".Login.LoginFragment">
 
@@ -26,6 +26,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="84dp"
                 android:src="@drawable/usth_logo"
+                android:background=""
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +34,11 @@
 
             <EditText
                 android:id="@+id/editTextEmail"
+                style="@style/CustomEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:hint="Email"
+                android:hint="Student ID"
                 android:inputType="textEmailAddress"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +48,7 @@
 
             <EditText
                 android:id="@+id/editTextPassword"
+                style="@style/CustomEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
@@ -90,8 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="10dp"
-                    android:text="Forgot Password"
-                    android:textColor="@color/black"
+                    android:text="Forgot Password?"
+                    android:textColor="@color/white"
                     android:textSize="17sp"
                     tools:ignore="InvalidId" />
 

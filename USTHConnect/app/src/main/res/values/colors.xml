@@ -24,10 +24,6 @@
     <color name="color_4">#6d62f7</color>
     <color name="color_5">#c234dc</color>
 
-
-
-<!--    <color name="colorAccentDark">#dfe3ee</color>-->
-
-<!--    <color name="text_">#B1B1BC</color>-->
+    <color name="next_button">#ff3462</color>
 
 </resources>
