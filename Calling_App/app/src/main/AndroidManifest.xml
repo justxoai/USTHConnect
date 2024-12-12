@@ -4,19 +4,11 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
-
-    <!-- GPT -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
-<!--    <uses-permission android:name="android.permission.SYSTEM_CAMERA" tools:ignore="ProtectedPermissions" />-->
-
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+        android:required="false" /> <!-- GPT -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" /> <!-- <uses-permission android:name="android.permission.SYSTEM_CAMERA" tools:ignore="ProtectedPermissions" /> -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- <uses-permission android:name="android.permission.CAMERA" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-
-
-    <!-- Linphone -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- Linphone -->
     <!-- To be able to display contacts list & match calling/called numbers -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- Starting Android 13 we need to ask notification permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Needed for full screen intent in incoming call notifications -->
@@ -60,6 +52,12 @@
         android:theme="@style/Theme.Calling_App"
         tools:targetApi="31">
         <activity
+            android:name=".Linphone.MessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".IncomingCallActivity"
             android:exported="false" />
         <activity
@@ -96,12 +94,7 @@
             <intent-filter>
                 <action android:name="org.linphone.core.action.PUSH_RECEIVED" />
             </intent-filter>
-        </receiver> <!-- The following isn't mandatory but having a foreground service prevents Android to kill the app during a call -->
-        <!-- You can create your own service that inherits from this class for simplicity or handle the foreground service yourself -->
-<!--        <service-->
-<!--            android:name="org.linphone.core.tools.service.CoreService"-->
-<!--            android:foregroundServiceType="phoneCall|camera|microphone"-->
-<!--            android:stopWithTask="false" />-->
+        </receiver>
     </application>
 
 </manifest>

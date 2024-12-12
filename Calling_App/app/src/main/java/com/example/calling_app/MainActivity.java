@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.calling_app.Linphone.BoxChatActivity;
+import com.example.calling_app.Linphone.MessageActivity;
 import com.example.calling_app.Linphone.PushNotificationActivity;
 import com.example.calling_app.Linphone.RegisterFragment;
 
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         register_fragment();
 
 //        register_account_browser();
+
+//        Intent i = new Intent(MainActivity.this, RegisterActivity.class);
+//        startActivity(i);
+
 
     }
 

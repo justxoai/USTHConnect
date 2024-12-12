@@ -3,13 +3,18 @@ package com.example.calling_app.Linphone;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,15 +28,22 @@ import com.example.calling_app.R;
 import org.linphone.core.Core;
 import org.linphone.core.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
 
 public class BoxChatActivity extends AppCompatActivity {
 
     private Core incoming_core;
     private Core outgoing_core;
+    private Core boxchat_core;
 
     private String username;
     private String password;
     private String box_chat;
+
+    private ChatRoom chatRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +60,9 @@ public class BoxChatActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.box_chat_username);
         textView.setText(box_chat);
 
-        Factory factory = Factory.instance();
-        factory.setDebugMode(true, "Hello Linphone Incoming");
-        incoming_core = factory.createCore(null, null, this);
+        Factory incoming_factory = Factory.instance();
+        incoming_factory.setDebugMode(true, "Hello Linphone Incoming");
+        incoming_core = incoming_factory.createCore(null, null, this);
 
         incoming_login(username, password);
 
@@ -81,13 +93,10 @@ public class BoxChatActivity extends AppCompatActivity {
             incoming_core.enableMic(!incoming_core.micEnabled());
         });
 
-        findViewById(R.id.incoming_toggle_speaker).setOnClickListener(view -> toggleSpeaker());
-
-
         // Outgoing call
-        Factory factory2 = Factory.instance();
-        factory2.setDebugMode(true, "Hello Linphone Outcoming");
-        outgoing_core = factory2.createCore(null, null, this);
+        Factory outgoing_factory = Factory.instance();
+        outgoing_factory.setDebugMode(true, "Hello Linphone Outcoming");
+        outgoing_core = outgoing_factory.createCore(null, null, this);
 
         outgoing_login(username, password);
 
@@ -124,6 +133,16 @@ public class BoxChatActivity extends AppCompatActivity {
 
             }
         });
+
+        // BoxChat
+        Factory boxchat_factory = Factory.instance();
+        boxchat_factory.setDebugMode(true, "Hello Linphone");
+        boxchat_core = boxchat_factory.createCore(null, null, this);
+
+        box_chat_login(username, password);
+
+        findViewById(R.id.send_message).setOnClickListener(v -> sendMessage());
+        findViewById(R.id.send_image).setOnClickListener(v -> sendImage());
     }
 
     // Incoming CoreListenerStub
@@ -211,6 +230,42 @@ public class BoxChatActivity extends AppCompatActivity {
             }*/
         }
     }
+
+    // Incoming Login
+    private void incoming_login(String username, String password) {
+        String domain = "sip.linphone.org";
+
+        TransportType transportType = TransportType.Tls;
+
+        AuthInfo authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null);
+
+        AccountParams params = incoming_core.createAccountParams();
+        Address identity = Factory.instance().createAddress("sip:" + username + "@" + domain);
+        params.setIdentityAddress(identity);
+
+        Address address = Factory.instance().createAddress("sip:" + domain);
+        if (address != null) {
+            address.setTransport(transportType);
+        }
+
+        params.setServerAddress(address);
+        params.setRegisterEnabled(true);
+
+        Account account = incoming_core.createAccount(params);
+
+        incoming_core.addAuthInfo(authInfo);
+        incoming_core.addAccount(account);
+
+        incoming_core.setDefaultAccount(account);
+        incoming_core.addListener(incomingCallCoreListener);
+        incoming_core.start();
+
+        // We will need the RECORD_AUDIO permission for video call
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+        }
+    }
+
 
     // Outgoing CoreListener
     private final CoreListenerStub outgoingCallCoreListener = new CoreListenerStub() {
@@ -343,41 +398,6 @@ public class BoxChatActivity extends AppCompatActivity {
         }
     }
 
-    // Incoming Login
-    private void incoming_login(String username, String password) {
-        String domain = "sip.linphone.org";
-
-        TransportType transportType = TransportType.Tls;
-
-        AuthInfo authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null);
-
-        AccountParams params = incoming_core.createAccountParams();
-        Address identity = Factory.instance().createAddress("sip:" + username + "@" + domain);
-        params.setIdentityAddress(identity);
-
-        Address address = Factory.instance().createAddress("sip:" + domain);
-        if (address != null) {
-            address.setTransport(transportType);
-        }
-
-        params.setServerAddress(address);
-        params.setRegisterEnabled(true);
-
-        Account account = incoming_core.createAccount(params);
-
-        incoming_core.addAuthInfo(authInfo);
-        incoming_core.addAccount(account);
-
-        incoming_core.setDefaultAccount(account);
-        incoming_core.addListener(incomingCallCoreListener);
-        incoming_core.start();
-
-        // We will need the RECORD_AUDIO permission for video call
-        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 0);
-        }
-    }
-
     // Outgoing Login
     private void outgoing_login(String username, String password) {
         String domain = "sip.linphone.org";
@@ -414,5 +434,249 @@ public class BoxChatActivity extends AppCompatActivity {
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 0);
         }
+    }
+
+
+    // Boxchat CoreListener
+    private final CoreListenerStub BoxChatCoreListener = new CoreListenerStub() {
+        @Override
+        public void onAccountRegistrationStateChanged(Core core, Account account, RegistrationState state, String message) {
+        }
+
+        @Override
+        public void onMessageReceived(Core core, ChatRoom chatRoom, ChatMessage message) {
+            if (BoxChatActivity.this.chatRoom == null) {
+                if (chatRoom.hasCapability(ChatRoomCapabilities.Basic.toInt())) {
+                    BoxChatActivity.this.chatRoom = chatRoom;
+                }
+            }
+
+            chatRoom.markAsRead();
+            addMessageToHistory(message);
+        }
+    };
+
+    // Message CoreListener
+    private final ChatMessageListenerStub chatMessageListener = new ChatMessageListenerStub() {
+        @Override
+        public void onMsgStateChanged(ChatMessage message, ChatMessage.State state) {
+            View messageView = (View) message.getUserData();
+            if (messageView != null) {
+                switch (state) {
+                    case InProgress:
+                        messageView.setBackgroundColor(getColor(R.color.yellow));
+                        break;
+                    case Delivered:
+                        messageView.setBackgroundColor(getColor(R.color.orange));
+                        break;
+                    case DeliveredToUser:
+                        messageView.setBackgroundColor(getColor(R.color.blue));
+                        break;
+                    case Displayed:
+                        messageView.setBackgroundColor(getColor(R.color.green));
+                        break;
+                    case NotDelivered:
+                        messageView.setBackgroundColor(getColor(R.color.red));
+                        break;
+                    case FileTransferDone:
+                        if (!message.isOutgoing()) {
+                            LinearLayout messages = findViewById(R.id.messages);
+                            messages.removeView(messageView);
+                            addMessageToHistory(message);
+                        }
+                        break;
+                }
+            }
+        }
+    };
+
+    // 4 Function chua ro muc dich
+    private void addMessageToHistory(ChatMessage chatMessage) {
+        for (Content content : chatMessage.getContents()) {
+            if (content.isText()) {
+                addTextMessageToHistory(chatMessage, content);
+            } else if (content.isFile()) {
+                if (content.getName().endsWith(".jpeg") || content.getName().endsWith(".jpg") || content.getName().endsWith(".png")) {
+                    addImageMessageToHistory(chatMessage, content);
+                }
+            } else if (content.isFileTransfer()) {
+                addDownloadButtonToHistory(chatMessage, content);
+            }
+        }
+    }
+
+    private void addTextMessageToHistory(ChatMessage chatMessage, Content content) {
+        TextView messageView = new TextView(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = chatMessage.isOutgoing() ? Gravity.RIGHT : Gravity.LEFT;
+        messageView.setLayoutParams(layoutParams);
+        messageView.setText(content.getUtf8Text());
+
+        if (chatMessage.isOutgoing()) {
+            messageView.setBackgroundColor(getColor(R.color.white));
+        } else {
+            messageView.setBackgroundColor(getColor(R.color.purple_200));
+        }
+
+        chatMessage.setUserData(messageView);
+
+        LinearLayout messages = findViewById(R.id.messages);
+        messages.addView(messageView);
+        ((ScrollView) findViewById(R.id.scroll)).fullScroll(ScrollView.FOCUS_DOWN);
+    }
+
+    private void addImageMessageToHistory(ChatMessage chatMessage, Content content) {
+        ImageView imageView = new ImageView(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = chatMessage.isOutgoing() ? Gravity.RIGHT : Gravity.LEFT;
+        imageView.setLayoutParams(layoutParams);
+
+        imageView.setImageBitmap(BitmapFactory.decodeFile(content.getFilePath()));
+        chatMessage.setUserData(imageView);
+
+        LinearLayout messages = findViewById(R.id.messages);
+        messages.addView(imageView);
+        ((ScrollView) findViewById(R.id.scroll)).fullScroll(ScrollView.FOCUS_DOWN);
+    }
+
+    private void addDownloadButtonToHistory(ChatMessage chatMessage, Content content) {
+        Button buttonView = new Button(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = chatMessage.isOutgoing() ? Gravity.RIGHT : Gravity.LEFT;
+        buttonView.setLayoutParams(layoutParams);
+        buttonView.setText("Download");
+
+        chatMessage.setUserData(buttonView);
+        buttonView.setOnClickListener(v -> {
+            buttonView.setEnabled(false);
+            content.setFilePath(getFilesDir().getAbsolutePath() + "/" + content.getName());
+            chatMessage.downloadContent(content);
+
+            if (!chatMessage.isOutgoing()) {
+                chatMessage.addListener(chatMessageListener);
+            }
+        });
+
+        LinearLayout messages = findViewById(R.id.messages);
+        messages.addView(buttonView);
+        ((ScrollView) findViewById(R.id.scroll)).fullScroll(ScrollView.FOCUS_DOWN);
+    }
+
+    private void createBasicChatRoom() {
+        ChatRoomParams params = boxchat_core.createDefaultChatRoomParams();
+        params.setBackend(ChatRoomBackend.Basic);
+        params.enableEncryption(false);
+        params.enableGroup(false);
+
+        if (params.isValid()) {
+            String remoteSipUri = String.format("sip:%s@sip.linphone.org", box_chat);
+            Address remoteAddress = Factory.instance().createAddress(remoteSipUri);
+
+            if (remoteAddress != null) {
+                Address localAddress = boxchat_core.getDefaultAccount().getParams().getIdentityAddress();
+                ChatRoom room = boxchat_core.createChatRoom(params, localAddress, new Address[]{remoteAddress});
+                if (room != null) {
+                    chatRoom = room;
+                    findViewById(R.id.remote_address).setEnabled(false);
+                }
+            }
+        }
+    }
+
+    private void sendMessage() {
+        if (chatRoom == null) {
+            createBasicChatRoom();
+        }
+
+        String messageText = ((EditText) findViewById(R.id.message)).getText().toString();
+        ChatMessage chatMessage = chatRoom.createMessageFromUtf8(messageText);
+        chatMessage.addListener(chatMessageListener);
+
+        addMessageToHistory(chatMessage);
+        chatMessage.send();
+
+        ((EditText) findViewById(R.id.message)).getText().clear();
+    }
+
+    private void sendImage() {
+        if (chatRoom == null) {
+            createBasicChatRoom();
+        }
+
+        Content content = Factory.instance().createContent();
+        content.setType("image");
+        content.setSubtype("png");
+
+        String filePath = getFilesDir().getAbsolutePath() + "/phone.png";
+        copy("phone.png", filePath);
+        content.setFilePath(filePath);
+
+        ChatMessage chatMessage = chatRoom.createFileTransferMessage(content);
+        chatMessage.addListener(chatMessageListener);
+
+        boxchat_core.setFileTransferServer("https://www.linphone.org:444/lft.php");
+
+        addMessageToHistory(chatMessage);
+        chatMessage.send();
+    }
+
+    private void copy(String from, String to) {
+        File outFile = new File(to);
+        if (outFile.exists()) {
+            return;
+        }
+
+        try (InputStream inFile = getAssets().open(from);
+             FileOutputStream outStream = new FileOutputStream(outFile)) {
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inFile.read(buffer)) > 0) {
+                outStream.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+            Log.i("MessageActivity", "Failed to copy file");
+        }
+    }
+
+    private void box_chat_login(String username, String password) {
+        String domain = "sip.linphone.org";
+
+        TransportType transportType = TransportType.Tls;
+
+        AuthInfo authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null);
+
+        AccountParams params = boxchat_core.createAccountParams();
+        Address identity = Factory.instance().createAddress("sip:" + username + "@" + domain);
+        params.setIdentityAddress(identity);
+
+        Address address = Factory.instance().createAddress("sip:" + domain);
+        if (address != null) {
+            address.setTransport(transportType);
+            params.setServerAddress(address);
+        }
+        params.setRegisterEnabled(true);
+
+        Account account = boxchat_core.createAccount(params);
+        boxchat_core.addAuthInfo(authInfo);
+        boxchat_core.addAccount(account);
+
+        boxchat_core.setDefaultAccount(account);
+        boxchat_core.addListener(BoxChatCoreListener);
+        boxchat_core.start();
+
+        // Advance Boxchat (?)
+//        params.setServerAddress(address);
+//        params.setRegisterEnabled(true);
+//        params.setConferenceFactoryUri("sip:conference-factory@sip.linphone.org");
+//
+//        core.addAuthInfo(authInfo);
+//        Account account = core.createAccount(params);
+//        core.addAccount(account);
+//        core.setDefaultAccount(account);
+//        core.setLimeX3DhServerUrl("https://lime.linphone.org/lime-server/lime-server.php");
+//
+//        core.addListener(coreListener);
+//        core.start();
     }
 }
