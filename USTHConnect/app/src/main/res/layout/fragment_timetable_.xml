@@ -30,67 +30,158 @@
             android:background="@color/background"
             android:orientation="vertical">
 
-            <!--- Calender -->
+            <!-- Button -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp">
+                android:gravity="center_horizontal">
 
-                <TextView
+                <Button
+                    android:id="@+id/weeklyAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="November"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center"
+                    android:text="Week"
+                    android:textColor="#ffffff"
+                    android:background="@null"
+                    android:textStyle="bold"
+                    android:layout_marginRight="60dp"
+                    android:textSize="20sp"/>
 
-                <ImageButton
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/more_down" />
+                <Button
+                    android:id="@+id/dailyAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Daily"
+                    android:textColor="#ffffff"
+                    android:background="@null"
+                    android:textStyle="bold"
+                    android:onClick="dailyAction"
+                    android:textSize="20sp"/>
 
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp">
 
-                <!--- TabLayout -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/previousMonthAction"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/blue_usth"
-                    android:padding="15dp">
+                    android:layout_weight="1"
+                    android:text="@string/back"
+                    android:textColor="#ffffff"
+                    android:background="@null"
+                    android:textStyle="bold"
+                    android:onClick="previousMonthAction"
+                    android:textSize="20sp"/>
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/schedule_tablayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/blue_usth"
-                        app:tabBackground="@drawable/tab_select"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabSelectedTextColor="@color/white"
-                        app:tabTextAppearance="@style/TabLayout"
-                        app:tabTextColor="@color/white" />
-
-                </LinearLayout>
-
-                <!-- ViewPager2 -->
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/schedule_viewPager2"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/monthYearTV"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1" />
+                    android:text="Month Year"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"/>
+
+                <Button
+                    android:id="@+id/nextMonthAction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/forward"
+                    android:textColor="#ffffff"
+                    android:background="@null"
+                    android:textStyle="bold"
+                    android:onClick="nextMonthAction"
+                    android:textSize="20sp"/>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SUN"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="MON"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TUE"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="WED"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="THUR"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="FRI"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SAT"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendarRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 

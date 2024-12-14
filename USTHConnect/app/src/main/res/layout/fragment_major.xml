@@ -63,17 +63,17 @@
             android:textStyle="bold" />
 
         <!-- Create textview in layout to set text in the dropdown -->
-        <Spinner
-            android:id="@+id/select_major"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textline"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:background="#ccc"
-            android:padding="10dp"
-            android:prompt="Major"
-            android:spinnerMode="dropdown" />
+<!--        <Spinner-->
+<!--            android:id="@+id/select_major"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/textline"-->
+<!--            android:layout_marginLeft="50dp"-->
+<!--            android:layout_marginRight="50dp"-->
+<!--            android:background="#ccc"-->
+<!--            android:padding="10dp"-->
+<!--            android:prompt="Major"-->
+<!--            android:spinnerMode="dropdown" />-->
 
         <TextView
             android:id="@+id/textline2"

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/testbackground"
+    android:background="@drawable/blur_background"
     android:orientation="vertical"
-    tools:context=".Login.LoginFragment">
+    tools:context=".StudyBuddy.Welcome.Register_StudyBuddyFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:hint="Student ID"
+                android:hint="Username"
                 android:inputType="textEmailAddress"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
                 android:layout_marginEnd="32dp"
                 android:backgroundTint="@color/blue_usth"
                 android:padding="10dp"
-                android:text="Login"
+                android:text="Register"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="10dp"
-                    android:text="Forgot Password?"
+                    android:text="Register SIP Account"
                     android:textColor="@color/white"
                     android:textSize="17sp"
                     tools:ignore="InvalidId" />

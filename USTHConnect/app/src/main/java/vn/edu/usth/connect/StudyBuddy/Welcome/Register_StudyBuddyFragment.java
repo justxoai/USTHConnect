@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Schedule.TabLayout_Fragment;
+package vn.edu.usth.connect.StudyBuddy.Welcome;
 
 import android.os.Bundle;
 
@@ -10,13 +10,12 @@ import android.view.ViewGroup;
 
 import vn.edu.usth.connect.R;
 
-public class Week_Fragment extends Fragment {
+public class Register_StudyBuddyFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_week_, container, false);
-
+        View v = inflater.inflate(R.layout.fragment_register__study_buddy, container, false);
         return v;
     }
 }

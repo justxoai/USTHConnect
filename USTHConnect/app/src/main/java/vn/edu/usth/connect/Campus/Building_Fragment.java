@@ -27,6 +27,7 @@ public class Building_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // fragment_building_.xml
         View v = inflater.inflate(R.layout.fragment_building_, container, false);
 
         setup_recyclerview_function(v);
@@ -36,6 +37,8 @@ public class Building_Fragment extends Fragment {
         return v;
     }
 
+    // SetUp Recyclerview:
+    // Folder: RecyclerView: BuildingAdapter, BuildingItem, BuildingViewHolder
     private void setup_recyclerview_function(View v){
         RecyclerView recyclerView = v.findViewById(R.id.building_recyclerview);
 
