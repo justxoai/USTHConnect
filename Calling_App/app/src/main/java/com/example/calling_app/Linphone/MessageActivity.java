@@ -24,8 +24,10 @@ public class MessageActivity extends AppCompatActivity {
     private Core core;
     private ChatRoom chatRoom;
 
-    private String username = "hoaianhngx";
+    private String username = "ducduyvx";
     private String password = "1234567890";
+
+    private String box_chat = "hoaianhngx";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,36 +37,76 @@ public class MessageActivity extends AppCompatActivity {
 
         Factory factory = Factory.instance();
         factory.setDebugMode(true, "Hello Linphone");
+        factory.setLogCollectionPath(getFilesDir().getAbsolutePath());
+        factory.enableLogCollection(LogCollectionState.Enabled);
+
+        new File(getFilesDir() + "/linphone.db").delete();
+        new File(getFilesDir() + "/x3dh.c25519.sqlite3").delete();
+        new File(getFilesDir() + "/zrtp-secrets.db").delete();
+
         core = factory.createCore(null, null, this);
 
         login(username, password);
 
+
+        createFlexisipChatRoom();
+
+
         findViewById(R.id.send_message).setOnClickListener(v -> sendMessage());
+        findViewById(R.id.send_message).setEnabled(false);
+
         findViewById(R.id.send_image).setOnClickListener(v -> sendImage());
+        findViewById(R.id.send_image).setEnabled(false);
     }
 
     private final CoreListenerStub coreListener = new CoreListenerStub() {
         @Override
         public void onAccountRegistrationStateChanged(Core core, Account account, RegistrationState state, String message) {
             ((TextView) findViewById(R.id.registration_status)).setText(message);
-
         }
 
         @Override
         public void onMessageReceived(Core core, ChatRoom chatRoom, ChatMessage message) {
             if (MessageActivity.this.chatRoom == null) {
-                if (chatRoom.hasCapability(ChatRoomCapabilities.Basic.toInt())) {
+                if (chatRoom.hasCapability(ChatRoomCapabilities.OneToOne.toInt()) &&
+                        chatRoom.hasCapability(ChatRoomCapabilities.Encrypted.toInt())) {
                     MessageActivity.this.chatRoom = chatRoom;
-
-                    // Load sip domain
-                    EditText remoteAddress = findViewById(R.id.remote_address);
-                    remoteAddress.setText(chatRoom.getPeerAddress().asStringUriOnly());
-                    remoteAddress.setEnabled(false);
+                    chatRoom.addListener(chatRoomListener);
+                    enableEphemeral();
                 }
             }
 
             chatRoom.markAsRead();
             addMessageToHistory(message);
+        }
+    };
+
+    private final ChatRoomListener chatRoomListener = new ChatRoomListenerStub() {
+        @Override
+        public void onStateChanged(ChatRoom chatRoom, ChatRoom.State newState) {
+            if (newState == ChatRoom.State.Created) {
+                findViewById(R.id.send_message).setEnabled(true);
+                enableEphemeral();
+            }
+        }
+
+        @Override
+        public void onEphemeralEvent(ChatRoom chatRoom, EventLog eventLog) {}
+
+        @Override
+        public void onEphemeralMessageDeleted(ChatRoom chatRoom, EventLog eventLog) {
+            ChatMessage message = eventLog.getChatMessage();
+            View messageView = (View) message.getUserData();
+            ((LinearLayout) findViewById(R.id.messages)).removeView(messageView);
+        }
+
+        @Override
+        public void onEphemeralMessageTimerStarted(ChatRoom chatRoom, EventLog eventLog) {
+            ChatMessage message = eventLog.getChatMessage();
+            View messageView = (View) message.getUserData();
+            if (messageView != null) {
+                messageView.setBackgroundColor(getColor(R.color.purple_500));
+            }
         }
     };
 
@@ -155,7 +197,7 @@ public class MessageActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity = chatMessage.isOutgoing() ? Gravity.RIGHT : Gravity.LEFT;
         buttonView.setLayoutParams(layoutParams);
-        buttonView.setText("Download");
+        buttonView.setText("Dow Image/Load Image");
 
         chatMessage.setUserData(buttonView);
         buttonView.setOnClickListener(v -> {
@@ -173,32 +215,42 @@ public class MessageActivity extends AppCompatActivity {
         ((ScrollView) findViewById(R.id.scroll)).fullScroll(ScrollView.FOCUS_DOWN);
     }
 
-    private void createBasicChatRoom() {
+    private void createFlexisipChatRoom() {
         ChatRoomParams params = core.createDefaultChatRoomParams();
-        params.setBackend(ChatRoomBackend.Basic);
-        params.enableEncryption(false);
+        params.setBackend(ChatRoomBackend.FlexisipChat);
         params.enableGroup(false);
+        params.enableEncryption(true);
+        params.setEncryptionBackend(ChatRoomEncryptionBackend.Lime);
+        params.setSubject("dummy subject");
 
         if (params.isValid()) {
-            String remoteSipUri = ((EditText) findViewById(R.id.remote_address)).getText().toString();
+            String remoteSipUri = String.format("sip:%s@sip.linphone.org", box_chat);
             Address remoteAddress = Factory.instance().createAddress(remoteSipUri);
 
             if (remoteAddress != null) {
                 Address localAddress = core.getDefaultAccount().getParams().getIdentityAddress();
                 ChatRoom room = core.createChatRoom(params, localAddress, new Address[]{remoteAddress});
                 if (room != null) {
+                    room.addListener(chatRoomListener);
                     chatRoom = room;
-                    findViewById(R.id.remote_address).setEnabled(false);
+
+                    if (room.getState() == ChatRoom.State.Created) {
+                        findViewById(R.id.send_message).setEnabled(true);
+                        enableEphemeral();
+                    }
                 }
             }
         }
     }
 
-    private void sendMessage() {
-        if (chatRoom == null) {
-            createBasicChatRoom();
+    private void enableEphemeral() {
+        if (chatRoom != null) {
+            chatRoom.enableEphemeral(true);
+            chatRoom.setEphemeralLifetime(60);
         }
+    }
 
+    private void sendMessage() {
         String messageText = ((EditText) findViewById(R.id.message)).getText().toString();
         ChatMessage chatMessage = chatRoom.createMessageFromUtf8(messageText);
         chatMessage.addListener(chatMessageListener);
@@ -210,10 +262,6 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendImage() {
-        if (chatRoom == null) {
-            createBasicChatRoom();
-        }
-
         Content content = Factory.instance().createContent();
         content.setType("image");
         content.setSubtype("png");
@@ -252,9 +300,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void login(String username, String password) {
         String domain = "sip.linphone.org";
-
         TransportType transportType = TransportType.Tls;
-
         AuthInfo authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null);
 
         AccountParams params = core.createAccountParams();
@@ -262,32 +308,27 @@ public class MessageActivity extends AppCompatActivity {
         params.setIdentityAddress(identity);
 
         Address address = Factory.instance().createAddress("sip:" + domain);
+
         if (address != null) {
             address.setTransport(transportType);
-            params.setServerAddress(address);
         }
+
+        params.setServerAddress(address);
         params.setRegisterEnabled(true);
+
+        params.setConferenceFactoryUri("sip:conference-factory@sip.linphone.org");
+
+
 
         Account account = core.createAccount(params);
         core.addAuthInfo(authInfo);
         core.addAccount(account);
 
+        core.setLimeX3DhServerUrl("https://lime.linphone.org/lime-server/lime-server.php");
+
         core.setDefaultAccount(account);
         core.addListener(coreListener);
         core.start();
 
-        // Advance Boxchat (?)
-//        params.setServerAddress(address);
-//        params.setRegisterEnabled(true);
-//        params.setConferenceFactoryUri("sip:conference-factory@sip.linphone.org");
-//
-//        core.addAuthInfo(authInfo);
-//        Account account = core.createAccount(params);
-//        core.addAccount(account);
-//        core.setDefaultAccount(account);
-//        core.setLimeX3DhServerUrl("https://lime.linphone.org/lime-server/lime-server.php");
-//
-//        core.addListener(coreListener);
-//        core.start();
     }
 }

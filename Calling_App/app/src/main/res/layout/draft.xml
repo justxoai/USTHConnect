@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/chat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/registration_status">
+
+        <Button
+            android:id="@+id/create_chat_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="Create" />
+
+        <EditText
+            android:id="@+id/remote_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/create_chat_room"
+            android:hint="Remote SIP address"/>
+
+        <Button
+            android:id="@+id/send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send ephemeral"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+        <EditText
+            android:id="@+id/message"
+            android:text="Test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/send_message"
+            android:layout_alignParentBottom="true"
+            android:hint="Ephemeral message to send"/>
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#A1A1A1"
+            android:fillViewport="true"
+            android:layout_above="@id/message"
+            android:layout_below="@id/remote_address">
+
+            <LinearLayout
+                android:id="@+id/messages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</LinearLayout>

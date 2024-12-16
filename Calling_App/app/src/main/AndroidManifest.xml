@@ -52,6 +52,18 @@
         android:theme="@style/Theme.Calling_App"
         tools:targetApi="31">
         <activity
+            android:name=".Month_Calender.DailyCalenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Month_Calender.WeekViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Month_Calender.EventEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Month_Calender.TestingActivity"
+            android:exported="false" />
+        <activity
             android:name=".Linphone.MessageActivity"
             android:exported="false" />
         <activity

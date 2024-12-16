@@ -11,13 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.calling_app.Linphone.BoxChatActivity;
 import com.example.calling_app.Linphone.MessageActivity;
-import com.example.calling_app.Linphone.PushNotificationActivity;
 import com.example.calling_app.Linphone.RegisterFragment;
-
-import org.linphone.core.Core;
-import org.linphone.core.Factory;
+import com.example.calling_app.Month_Calender.TestingActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 //        register_account_browser();
 
 //        Intent i = new Intent(MainActivity.this, RegisterActivity.class);
+//        startActivity(i);
+//
+//        Intent i = new Intent(MainActivity.this, MessageActivity.class);
 //        startActivity(i);
 
 

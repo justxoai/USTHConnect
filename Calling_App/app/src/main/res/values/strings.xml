@@ -14,4 +14,8 @@
 
     <string name="register_here" translatable="false">https://subscribe.linphone.org/register/email</string>
 
+
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+
 </resources>
