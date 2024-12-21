@@ -77,17 +77,6 @@
         android:textAlignment="center"
         android:textSize="18sp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Event"
-        android:textColor="#ffffff"
-        android:background="@null"
-        android:textStyle="bold"
-        android:onClick="newEventAction"
-        android:layout_gravity="center"
-        android:textSize="20sp"/>
-
     <ListView
         android:id="@+id/hourListView"
         android:layout_width="match_parent"

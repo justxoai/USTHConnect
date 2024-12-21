@@ -19,6 +19,8 @@ public class Fragment_Study_Buddy_changeing extends FragmentStateAdapter {
             case 1:
                 return new Message_Fragment();
             case 2:
+                return new AudioFragment();
+            case 3:
                 return new Study_Buddy_Profile_Fragment();
             default:
                 return new Study_Buddy_Fragment();
@@ -27,6 +29,6 @@ public class Fragment_Study_Buddy_changeing extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

@@ -28,8 +28,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import vn.edu.usth.connect.MainActivity;
 import vn.edu.usth.connect.R;
+import vn.edu.usth.connect.Resource.CategoryRecyclerView.CategoryActivity;
 
 public class Campus_Activity extends AppCompatActivity {
 
@@ -43,16 +43,21 @@ public class Campus_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_campus.xml
         setContentView(R.layout.activity_campus);
 
+        // ViewPager2: Change fragments: BuildingFragment and MapFragment
         mviewPager = findViewById(R.id.view_campus_pager);
+
+        // BottomNavigation: Bottom Menu :D
         bottomNavigationView = findViewById(R.id.campus_bottom_navigation);
 
+        // Adapter: Fragment_map_changing
         Fragment_map_changing adapter = new Fragment_map_changing(getSupportFragmentManager(), getLifecycle());
         mviewPager.setAdapter(adapter);
         mviewPager.setUserInputEnabled(false);
 
+        // ViewPager2 setup Function
         mviewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
             @Override
@@ -79,6 +84,7 @@ public class Campus_Activity extends AppCompatActivity {
             }
         });
 
+        // BottomNavigation setup Function
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -94,8 +100,10 @@ public class Campus_Activity extends AppCompatActivity {
             }
         });
 
+        // Setup Side-menu for Activity
         mDrawerLayout= findViewById(R.id.campus_activity);
 
+        // Function to open Side-menu
         ImageButton mImageView = findViewById(R.id.menu_button);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +114,10 @@ public class Campus_Activity extends AppCompatActivity {
             }
         });
 
+        // Side-menu function
         navigator_drawer_function();
 
+        // Load image in the Side-menu
         update_picture();
     }
 
@@ -146,7 +156,7 @@ public class Campus_Activity extends AppCompatActivity {
         to_resource_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(vn.edu.usth.connect.Campus.Campus_Activity.this, vn.edu.usth.connect.Resource.Resource_Activity.class);
+                Intent i = new Intent(vn.edu.usth.connect.Campus.Campus_Activity.this, CategoryActivity.class);
                 startActivity(i);
                 finish();
             }

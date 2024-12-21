@@ -17,12 +17,14 @@ public class List_Class_in_Course_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_list_class_in_course.xml
         setContentView(R.layout.activity_list_class_in_course);
 
+        // Button Function
         setup_function();
 
-        setup_recycler();
+        // Set text for RecyclerView
+        setup_text_recycler();
 
     }
 
@@ -33,7 +35,7 @@ public class List_Class_in_Course_Activity extends AppCompatActivity {
         });
     }
 
-    private void setup_recycler(){
+    private void setup_text_recycler(){
         TextView course_name = findViewById(R.id.course_name_timetable);
         TextView course_lecturer = findViewById(R.id.course_lecturer_timetable);
 

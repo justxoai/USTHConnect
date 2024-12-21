@@ -28,8 +28,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import vn.edu.usth.connect.MainActivity;
 import vn.edu.usth.connect.R;
+import vn.edu.usth.connect.Resource.CategoryRecyclerView.CategoryActivity;
 
 public class Schedule_Activity extends AppCompatActivity {
 
@@ -43,16 +43,21 @@ public class Schedule_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_schedule
         setContentView(R.layout.activity_schedule);
 
+        // ViewPager2: Change fragments: TimetableFragment, CourseFragment, FavoriteFragment
         mviewPager = findViewById(R.id.view_schedule_pager);
+
+        // BottomNavigation: Bottom Menu :D
         bottomNavigationView = findViewById(R.id.schedule_bottom_navigation);
 
+        // Adapter: Fragment_schedule_changing
         Fragment_schedule_changing adapter = new Fragment_schedule_changing(getSupportFragmentManager(), getLifecycle());
         mviewPager.setAdapter(adapter);
         mviewPager.setUserInputEnabled(false);
 
+        // ViewPager2 setup Function
         mviewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
             @Override
@@ -83,6 +88,7 @@ public class Schedule_Activity extends AppCompatActivity {
             }
         });
 
+        // BottomNavigation setup Function
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -102,8 +108,10 @@ public class Schedule_Activity extends AppCompatActivity {
             }
         });
 
+        // Setup Side-menu for Activity
         mDrawerLayout = findViewById(R.id.schedule_activity);
 
+        // Function to open Side-menu
         ImageButton mImageView = findViewById(R.id.menu_button);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +122,10 @@ public class Schedule_Activity extends AppCompatActivity {
             }
         });
 
+        // Side-menu function
         navigator_drawer_function();
 
+        // Load image in the Side-menu
         update_picture();
 
     }
@@ -155,7 +165,7 @@ public class Schedule_Activity extends AppCompatActivity {
         to_resource_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(vn.edu.usth.connect.Schedule.Schedule_Activity.this, vn.edu.usth.connect.Resource.Resource_Activity.class);
+                Intent i = new Intent(vn.edu.usth.connect.Schedule.Schedule_Activity.this, CategoryActivity.class);
                 startActivity(i);
                 finish();
             }

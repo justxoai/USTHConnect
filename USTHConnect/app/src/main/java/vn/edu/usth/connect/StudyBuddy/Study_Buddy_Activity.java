@@ -29,9 +29,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import vn.edu.usth.connect.MainActivity;
 import vn.edu.usth.connect.R;
-import vn.edu.usth.connect.Schedule.Fragment_schedule_changing;
+import vn.edu.usth.connect.Resource.CategoryRecyclerView.CategoryActivity;
+import vn.edu.usth.connect.StudyBuddy.Welcome.WelcomeFragment;
 
 public class Study_Buddy_Activity extends AppCompatActivity {
 
@@ -45,16 +45,30 @@ public class Study_Buddy_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_study_buddy.xml
         setContentView(R.layout.activity_study_buddy);
 
+        // SharedPreference for the 1st time
+//        SharedPreferences sharedPreferences = getSharedPreferences("ToRegister12", MODE_PRIVATE);
+//        boolean isRegister = sharedPreferences.getBoolean("IsRegister", false);
+//
+//        if(!isRegister){
+//            // Move to WelcomeFragment
+//            navigatorToRegister();
+//        }
+
+        // ViewPager2: Change fragments: MessageFragment, StudyBuddyFragment, StudyBuddyProfileFragment
         mviewPager = findViewById(R.id.view_study_buddy_pager);
+
+        // BottomNavigation: Bottom Menu :D
         bottomNavigationView = findViewById(R.id.study_buddy_bottom_navigation);
 
+        // Adapter: Fragment_Study_Buddy_changing
         Fragment_Study_Buddy_changeing adapter = new Fragment_Study_Buddy_changeing(getSupportFragmentManager(), getLifecycle());
         mviewPager.setAdapter(adapter);
         mviewPager.setUserInputEnabled(false);
 
+        // ViewPager2 setup Function
         mviewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
             @Override
@@ -73,9 +87,11 @@ public class Study_Buddy_Activity extends AppCompatActivity {
                         bottomNavigationView.getMenu().findItem(R.id.chat_page).setChecked(true);
                         break;
                     case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.audio_page).setChecked(true);
+                        break;
+                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.sb_profile_page).setChecked(true);
                         break;
-
                 }
             }
 
@@ -85,6 +101,7 @@ public class Study_Buddy_Activity extends AppCompatActivity {
             }
         });
 
+        // BottomNavigation setup Function
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -96,16 +113,22 @@ public class Study_Buddy_Activity extends AppCompatActivity {
                     mviewPager.setCurrentItem(1, true);
                     return true;
                 }
-                if (item.getItemId() == R.id.sb_profile_page) {
+                if (item.getItemId() == R.id.audio_page) {
                     mviewPager.setCurrentItem(2, true);
+                    return true;
+                }
+                if (item.getItemId() == R.id.sb_profile_page) {
+                    mviewPager.setCurrentItem(3, true);
                     return true;
                 }
                 return false;
             }
         });
 
+        // Setup Side-menu for Activity
         mDrawerLayout= findViewById(R.id.sb_activity);
 
+        // Function to open Side-menu
         ImageButton mImageView = findViewById(R.id.menu_button);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +139,10 @@ public class Study_Buddy_Activity extends AppCompatActivity {
             }
         });
 
+        // Side-menu function
         navigator_drawer_function();
 
+        // Load image in the Side-menu
         update_picture();
     }
 
@@ -156,7 +181,7 @@ public class Study_Buddy_Activity extends AppCompatActivity {
         to_resource_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(vn.edu.usth.connect.StudyBuddy.Study_Buddy_Activity.this, vn.edu.usth.connect.Resource.Resource_Activity.class);
+                Intent i = new Intent(vn.edu.usth.connect.StudyBuddy.Study_Buddy_Activity.this, CategoryActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -224,5 +249,13 @@ public class Study_Buddy_Activity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void navigatorToRegister(){
+        Fragment welcomeFragment = new WelcomeFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, welcomeFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

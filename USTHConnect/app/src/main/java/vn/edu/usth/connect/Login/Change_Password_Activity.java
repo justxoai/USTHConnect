@@ -21,6 +21,7 @@ public class Change_Password_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // activity_change_password.xml
         setContentView(R.layout.activity_change_password);
 
         editTextEmail = findViewById(R.id.editTextReEmail);
@@ -29,10 +30,12 @@ public class Change_Password_Activity extends AppCompatActivity {
 
         change_password_button = findViewById(R.id.change_password);
         change_password_button.setOnClickListener(view -> {
+            // Get String form EditText
             String email = editTextEmail.getText().toString();
             String pass = editTextPassword.getText().toString();
             String confirm = editTextConfirmPassword.getText().toString();
 
+            // Check if EditText empty or not
             if(validatechangepass(email, pass, confirm)){
                 // Check new password and confirm equal
                 if(pass.equals(confirm)){
@@ -61,6 +64,7 @@ public class Change_Password_Activity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    // Check EditText empty
     private boolean validatechangepass(String email, String pass, String confirm) {
         return !email.isEmpty() && !pass.isEmpty() && !confirm.isEmpty();
     }
@@ -72,7 +76,7 @@ public class Change_Password_Activity extends AppCompatActivity {
             onBackPressed();
         });
 
-        // Move to Login
+        // Move back to Login, chưa safe password(?)
         Button change_password = findViewById(R.id.change_password);
         change_password.setOnClickListener(new View.OnClickListener() {
             @Override

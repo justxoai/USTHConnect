@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="10dp"
-                    android:text="Forgot Password?"
+                    android:text="Forgot Password"
                     android:textColor="@color/white"
                     android:textSize="17sp"
                     tools:ignore="InvalidId" />

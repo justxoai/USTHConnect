@@ -1,9 +1,7 @@
 package vn.edu.usth.connect.Schedule.TimeTable;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,8 +21,6 @@ import vn.edu.usth.connect.R;
 import vn.edu.usth.connect.Schedule.TimeTable.Calender.CalenderAdapter;
 import vn.edu.usth.connect.Schedule.TimeTable.Calender.CalenderUtils;
 import vn.edu.usth.connect.Schedule.TimeTable.Event.Event;
-import vn.edu.usth.connect.Schedule.TimeTable.Event.EventAdapter;
-import vn.edu.usth.connect.Schedule.TimeTable.Event.EventEditActivity;
 
 public class WeekViewActivity extends AppCompatActivity implements CalenderAdapter.OnItemListener{
 
@@ -96,18 +92,10 @@ public class WeekViewActivity extends AppCompatActivity implements CalenderAdapt
     // Daily Event ArrayList
     private void setEventAdpater() {
         ArrayList<Event> dailyEvents = Event.eventsForDate(CalenderUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter);
-    }
 
-    // Move to DailyCalender
-    public void dailyAction(View view) {
-        startActivity(new Intent(this, DailyCalenderActivity.class));
-    }
-
-    // Create Event like dynamic
-    public void newEventAction(View view) {
-        startActivity(new Intent(this, EventEditActivity.class));
+        // Use WeeklyEventAdapter instead of EventAdapter
+        WeeklyEventAdapter weeklyEventAdapter = new WeeklyEventAdapter(getApplicationContext(), dailyEvents);
+        eventListView.setAdapter(weeklyEventAdapter);
     }
 
     private void setup_function(){

@@ -1,6 +1,9 @@
 package vn.edu.usth.connect.Schedule.Course;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -11,6 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +29,21 @@ public class First_Course_Activity extends AppCompatActivity {
 
     private List<CourseItem> items;
     private CourseAdapter adapter;
+    public static List<CourseItem> favouriteCourses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_first_course.xml
         setContentView(R.layout.activity_first_course);
 
+        // Setup Recyclerview for Course and SearchView
         setup_recyclerview_function();
 
-        setup_recyclerview();
+        // Set text for RecyclerView
+        setup_text_recyclerview();
 
+        // Function for backbutton
         setup_function();
 
     }
@@ -44,7 +55,7 @@ public class First_Course_Activity extends AppCompatActivity {
         });
     }
 
-    private void setup_recyclerview(){
+    private void setup_text_recyclerview(){
         TextView program_name = findViewById(R.id.program_name);
 
         String name = getIntent().getStringExtra("Program Name");
@@ -52,20 +63,40 @@ public class First_Course_Activity extends AppCompatActivity {
         program_name.setText(name);
     }
 
+    // SetUp RecyclerView and SearchView
+    // Folder: RecyclerView: CourseItem, CourseAdapter, CourseViewHolder
     private void setup_recyclerview_function(){
+        // RecyclerView point to List_Class_in_Course_Activity
         RecyclerView recyclerView = findViewById(R.id.first_year_recyclerview);
 
         items = new ArrayList<CourseItem>();
 
-        items.add(new CourseItem("Introduction to Informatics", "Dr."));
-        items.add(new CourseItem("Fundamental Physics 1", "Dr."));
-        items.add(new CourseItem("General Chemistry 1", "Dr."));
-        items.add(new CourseItem("Cellular Biology", "Dr."));
-        items.add(new CourseItem("Calculus 1", "Dr."));
-        items.add(new CourseItem("Calculus 2", "Dr."));
+        items.add(new CourseItem("Introduction to Informatics", "Dr.", false));
+        items.add(new CourseItem("Fundamental Physics 1", "Dr.", false));
+        items.add(new CourseItem("General Chemistry 1", "Dr.", false));
+        items.add(new CourseItem("Cellular Biology", "Dr.", false));
+        items.add(new CourseItem("Calculus 1", "Dr.", false));
+        items.add(new CourseItem("Calculus 2", "Dr.", false));
 
+        favouriteCourses = loadFavouriteCourses();
+
+        for (CourseItem item : items) {
+            for (CourseItem favorite : favouriteCourses) {
+                if (item.getHeading().equals(favorite.getHeading())) {
+                    item.setFavourite(true);
+                    break;
+                }
+            }
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CourseAdapter(this, items);
+        adapter = new CourseAdapter(this, items, courseItem -> {
+            if (courseItem.isFavourite()) {
+                if (!favouriteCourses.contains(courseItem)) favouriteCourses.add(courseItem);
+            } else {
+                favouriteCourses.remove(courseItem);
+            }
+            saveFavouriteCourse();
+        });
         recyclerView.setAdapter(adapter);
 
         // SearchView
@@ -86,6 +117,32 @@ public class First_Course_Activity extends AppCompatActivity {
         });
     }
 
+    private void saveFavouriteCourse() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Convert the list to a JSON string (you can use Gson or any other method for serialization)
+        Gson gson = new Gson();
+        String json = gson.toJson(favouriteCourses);
+
+        editor.putString("favourite_courses_first", json);
+        editor.apply();
+
+        Log.d("Favourite", "Saved to SharedPreferences: " + json);
+    }
+
+    private List<CourseItem> loadFavouriteCourses() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Retrieve the JSON string and deserialize it
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("favourite_courses_first", "[]");  // Default to empty list
+        Type type = new TypeToken<List<CourseItem>>(){}.getType();
+
+        return gson.fromJson(json, type);
+    }
+
+    // Filter for SearchView
     private void filterList(String text) {
         List<CourseItem> filteredItems = new ArrayList<>();
 
@@ -107,6 +164,10 @@ public class First_Course_Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public List<CourseItem> getFavouriteCourses() {
+        return favouriteCourses;
     }
 
 }

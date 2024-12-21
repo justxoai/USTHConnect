@@ -19,13 +19,16 @@ public class Detail_Building_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_detail_building.xml
         setContentView(R.layout.activity_detail_building);
 
-        setup_recyclerview();
+        // Set text for RecyclerView
+        setup_text_recyclerview();
 
+        // Tablayout: Campus.TabLayout_Fragment, 7 days fragments :D
         date_tablayout();
 
+        // Function for backbutton
         setup_function();
     }
 
@@ -73,7 +76,8 @@ public class Detail_Building_Activity extends AppCompatActivity {
         });
     }
 
-    private void setup_recyclerview(){
+    // Set text building's name in Header and building's location
+    private void setup_text_recyclerview(){
         TextView building_name = findViewById(R.id.detail_building_name);
         TextView building_locate = findViewById(R.id.detail_building_locate);
 
@@ -84,6 +88,7 @@ public class Detail_Building_Activity extends AppCompatActivity {
         building_locate.setText(locate);
     }
 
+    // BackPress: backto BuildingFragment
     @Override
     public void onBackPressed() {
         super.onBackPressed();

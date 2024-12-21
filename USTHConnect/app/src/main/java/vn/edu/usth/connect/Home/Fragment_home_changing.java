@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import vn.edu.usth.connect.Home.NotificationRecyclerView.NotificationFragment;
+
 public class Fragment_home_changing  extends FragmentStateAdapter {
     public Fragment_home_changing(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
@@ -26,9 +28,9 @@ public class Fragment_home_changing  extends FragmentStateAdapter {
         }
     }
 
-@Override
-public int getItemCount() {
-    return 3;
-}
+    @Override
+    public int getItemCount() {
+        return 3;
+    }
 }
 

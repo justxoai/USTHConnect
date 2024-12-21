@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".Resource.Second_Third_Year.Course_Year_Activity">
+    tools:context=".Resource.CourseRecyclerView.CourseActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

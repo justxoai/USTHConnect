@@ -34,10 +34,15 @@ public class ChangePicture_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Activity_change_picture.xml
         setContentView(R.layout.activity_change_picture);
 
+        // Function to load image from url
+        // And Save Button to load Image and Refresh
+        // again to show Profile's Image
         load_image();
 
+        // Button Function: Cancel Button and Back Button
         setup_function();
     }
 

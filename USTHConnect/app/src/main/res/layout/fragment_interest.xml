@@ -12,6 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/blue_usth"
         android:padding="15dp">
 
         <ImageButton
@@ -22,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
             android:background="@drawable/back_arrow"
-            android:backgroundTint="@color/white" />
+            android:backgroundTint="@color/white"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -68,19 +69,37 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textline"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:layout_marginBottom="15dp"
             android:text="You like what you like. Let everyone know."
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_interests"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/textline2"
-            android:clipToPadding="false"
-            android:padding="16dp" />
+            android:scrollbars="none"
+            android:layout_below="@id/textline2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flexbox_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textline2"
+                    android:layout_marginTop="16dp"
+                    app:alignItems="center"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start">
+
+                </com.google.android.flexbox.FlexboxLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <Button
             android:id="@+id/next_button"
@@ -88,8 +107,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:backgroundTint="@color/next_button"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/next_button_background"
+            app:backgroundTint="@null"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Next" />

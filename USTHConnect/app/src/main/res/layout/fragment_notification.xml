@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/notification_page"
-    tools:context=".Home.NotificationFragment">
+    tools:context=".Home.NotificationRecyclerView.NotificationFragment">
 
     <LinearLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,7 +18,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Notification"
             android:textColor="@color/white"
@@ -31,20 +31,13 @@
             android:background="@color/background"
             android:orientation="vertical">
 
-            <ScrollView
+            <!-- RecyclerView for displaying notifications -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notificationRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                </LinearLayout>
-
-            </ScrollView>
+                android:padding="8dp"
+                android:scrollbars="vertical"/>
 
         </LinearLayout>
 

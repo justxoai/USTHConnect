@@ -16,11 +16,13 @@ public class Program_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_program.xml
         setContentView(R.layout.activity_program);
 
-        setup_recyclerview();
+        // Set text for RecyclerView
+        setup_text_recyclerview();
 
+        // Button Function
         setup_function();
    }
 
@@ -51,7 +53,7 @@ public class Program_Activity extends AppCompatActivity {
        });
    }
 
-   private void setup_recyclerview(){
+   private void setup_text_recyclerview(){
        TextView program_name = findViewById(R.id.program_name);
 
        String name = getIntent().getStringExtra("Program Name");

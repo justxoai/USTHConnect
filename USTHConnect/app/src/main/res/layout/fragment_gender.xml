@@ -12,6 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/blue_usth"
         android:padding="15dp">
 
         <ImageButton
@@ -22,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
             android:background="@drawable/back_arrow"
-            android:backgroundTint="@color/white" />
+            android:backgroundTint="@color/white"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -75,7 +76,9 @@
                 android:id="@+id/male"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_border"
+                app:backgroundTint="@null"
                 android:padding="10dp"
                 android:text="Male"
                 android:textSize="20sp"
@@ -85,7 +88,9 @@
                 android:id="@+id/female"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_border"
+                app:backgroundTint="@null"
                 android:padding="10dp"
                 android:text="Female"
                 android:textSize="20sp"
@@ -95,7 +100,8 @@
                 android:id="@+id/other_gender"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
+                android:background="@drawable/rounded_border"
+                app:backgroundTint="@null"
                 android:padding="10dp"
                 android:text="Prefer not to say"
                 android:textSize="20sp"
@@ -109,8 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:backgroundTint="@color/next_button"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/next_button_background"
+            app:backgroundTint="@null"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Next" />

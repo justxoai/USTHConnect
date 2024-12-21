@@ -124,30 +124,6 @@
                                         android:layout_marginBottom="15dp"
                                         android:orientation="vertical">
 
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="18sp"
-                                            android:text="Username:"
-                                            android:textColor="@color/black"
-                                            android:layout_marginBottom="15dp"
-                                            android:paddingLeft="10dp"/>
-
-                                        <androidx.cardview.widget.CardView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            app:cardCornerRadius="55dp">
-
-                                            <EditText
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:background="@color/white"
-                                                android:padding="10dp"
-                                                android:hint="Username"
-                                                android:inputType="none"/>
-
-                                        </androidx.cardview.widget.CardView>
-
                                     </LinearLayout>
 
                                     <LinearLayout
@@ -171,11 +147,12 @@
                                             app:cardCornerRadius="55dp">
 
                                             <EditText
+                                                android:id="@+id/edit_password"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:background="@color/white"
                                                 android:padding="10dp"
-                                                android:hint="Password"
+                                                android:hint="Enter Password"
                                                 android:inputType="textVisiblePassword"/>
 
                                         </androidx.cardview.widget.CardView>
@@ -203,11 +180,12 @@
                                             app:cardCornerRadius="55dp">
 
                                             <EditText
+                                                android:id="@+id/edit_pNumber"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:background="@color/white"
                                                 android:padding="10dp"
-                                                android:hint="Phone-number"
+                                                android:hint="Enter Phone Number"
                                                 android:inputType="numberDecimal"/>
 
                                         </androidx.cardview.widget.CardView>

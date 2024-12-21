@@ -40,319 +40,37 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Recent"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="25sp"/>
-
-                    <!--- Active Status -->
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:scrollbars="none">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="70dp"
-                                    android:layout_height="70dp">
-
-                                    <androidx.cardview.widget.CardView
-                                        android:layout_width="50dp"
-                                        android:layout_height="50dp"
-                                        android:layout_gravity="center"
-                                        app:cardBackgroundColor="@color/white"
-                                        app:cardCornerRadius="50dp">
-
-                                        <ImageButton
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/user"
-                                            />
-                                    </androidx.cardview.widget.CardView>
-
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="User"
-                                    android:textColor="@color/white"/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </HorizontalScrollView>
-
-                    <!--- Box Chat -->
+                    <!-- SearchView -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="30dp"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content">
 
-
+                        <SearchView
+                            android:id="@+id/chat_searchView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:iconifiedByDefault="false"
+                            android:background="@drawable/search_box"
+                            android:backgroundTint="@android:color/white"
+                            android:layout_margin="10dp"
+                            android:queryHint="Search Course"
+                            app:searchIcon="@drawable/search"/>
 
                     </LinearLayout>
+
+                    <!--- Box Chat -->
+                    <androidx.core.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/chat_recyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="10dp"
+                            android:nestedScrollingEnabled="false" />
+
+                    </androidx.core.widget.NestedScrollView>
 
                 </LinearLayout>
 

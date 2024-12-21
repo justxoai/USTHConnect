@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import vn.edu.usth.connect.R;
@@ -28,16 +30,27 @@ public class EventAdapter extends ArrayAdapter<Event> {
     {
         Event event = getItem(position);
 
+        if (event == null) {
+            return convertView;  // Return empty view if the event is null
+        }
+
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_frame, parent, false);
 
-        TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
+        TextView eventNameTV = convertView.findViewById(R.id.eventNameTV);
+        TextView eventTimeTV = convertView.findViewById(R.id.eventTimeTV);
+        TextView eventLocationTV = convertView.findViewById(R.id.eventLocationTV);
 
-        // CalenderUtils.formattedTime(event.getTime(): Get time: 12:12:12 AM
-        String eventTitle = "event.getName()" +" "+ CalenderUtils.formattedTime(event.getTime());
+        // Format the event's start and end time
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String startTime = event.getEventStartDateTime().format(timeFormatter);
+        String endTime = event.getEventEndDateTime().format(timeFormatter);
 
         // setText Event title
-        eventCellTV.setText(eventTitle);
+        eventNameTV.setText(event.getEventName());
+        eventTimeTV.setText(String.format("%s - %s", startTime, endTime));
+        eventLocationTV.setText(event.getLocation());
 
         return convertView;
     }

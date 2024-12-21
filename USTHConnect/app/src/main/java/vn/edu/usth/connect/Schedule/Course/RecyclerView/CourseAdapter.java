@@ -17,10 +17,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder>{
 
     Context context;
     List<CourseItem> items;
+    private OnFavouriteClickListener favouriteClickListener;
 
-    public CourseAdapter(Context context, List<CourseItem> items){
+    public interface OnFavouriteClickListener {
+        void onFavouriteClicked(CourseItem courseItem);
+    }
+
+    public CourseAdapter(Context context, List<CourseItem> items, OnFavouriteClickListener listener){
         this.context = context;
         this.items = items;
+        this.favouriteClickListener = listener;
     }
 
     @NonNull
@@ -35,7 +41,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder>{
 
         holder.heading.setText(item.getHeading());
         holder.subhead.setText(item.getSubhead());
+        holder.favorite_course_button.setImageResource( item.isFavourite() ? R.drawable.filled_star : R.drawable.favorite_course);
 
+        holder.favorite_course_button.setOnClickListener(view -> {
+            item.setFavourite(!item.isFavourite());
+            notifyItemChanged(position);
+            favouriteClickListener.onFavouriteClicked(item);
+        });
         holder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(context, List_Class_in_Course_Activity.class);
             i.putExtra("Course Name", item.getHeading());

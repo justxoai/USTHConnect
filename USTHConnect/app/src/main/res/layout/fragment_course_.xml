@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/course_page"
-    tools:context=".Schedule.Course_Fragment">
+    tools:context=".Schedule.Course.RecyclerView.Course_Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"

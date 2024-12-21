@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,15 +22,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
-import vn.edu.usth.connect.Home.EditProfile.Edit_Profile_Activity;
+import vn.edu.usth.connect.Home.Fragment_home_changing;
+import vn.edu.usth.connect.Home.NotificationRecyclerView.NotificationFragment;
+import vn.edu.usth.connect.Resource.CategoryRecyclerView.CategoryActivity;
+import vn.edu.usth.connect.Utils.NotificationUtils;
+import vn.edu.usth.connect.Workers.FetchEventsWorker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,23 +55,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        // SharePreferences: Save Login
+//        SharedPreferences sharedPreferences = getSharedPreferences("ToLogin", MODE_PRIVATE);
+//        boolean isLoggedIn = sharedPreferences.getBoolean("IsLoggedIn", false);
+//        String token = sharedPreferences.getString("Token", null);
+//
+//        if (!isLoggedIn || token == null || isTokenExpired(token)) {
+//            navigateToLoginFragment();
+//            return;
+//        }
 
-        SharedPreferences sharedPreferences = getSharedPreferences("ToLogin", MODE_PRIVATE);
-        boolean isLoggedIn = sharedPreferences.getBoolean("IsLoggedIn", false);
+        // Create notification channel (for devices running Android 8.0 and above)
+        NotificationUtils.createNotificationChannel(this);
 
-        if (!isLoggedIn) {
-            navigateToLoginFragment();
-            return;
-        }
+        setContentView(R.layout.activity_main); // Set layout first
 
+        // Schedule background tasks
+        scheduleEventFetchWorker();
+
+        // ViewPager2: Change fragments: DashboardFragment, NotificationFragment, ProfileFragment
         mviewPager = findViewById(R.id.view_pager);
+
+        // BottomNavigation: Bottom Menu :D
         bottomNavigationView = findViewById(R.id.home_bottom_navigation);
 
+        // Adapter: Fragment_home_changing
         vn.edu.usth.connect.Home.Fragment_home_changing adapter = new  vn.edu.usth.connect.Home.Fragment_home_changing(getSupportFragmentManager(), getLifecycle());
         mviewPager.setAdapter(adapter);
         mviewPager.setUserInputEnabled(false);
 
+        // ViewPager2 setup Function
         mviewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
             @Override
@@ -91,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // BottomNavigation setup Function
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -110,8 +135,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Setup Side-menu for Activity
         mDrawerLayout = findViewById(R.id.home_activity);
 
+        // Function to open Side-menu
         ImageButton mImageView = findViewById(R.id.menu_button);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +149,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Side-menu function
         navigator_drawer_function();
 
+        // Load image in the Side-menu
         update_picture();
 
+        // Handle intent for opening specific fragments
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent != null && intent.getStringExtra("open_fragment") != null) {
+            String fragmentToOpen = intent.getStringExtra("open_fragment");
+            if ("notification".equals(fragmentToOpen)) {
+                mviewPager.setCurrentItem(1, true);
+            }
+        }
+    }
+
+    // Check if the token is Expired
+    private boolean isTokenExpired(String token) {
+        try {
+            String[] split = token.split("\\.");
+            String payload = split[1];
+            String json = new String(android.util.Base64.decode(payload, android.util.Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(json);
+            long exp = jsonObject.getLong("exp");
+            long currentTime = System.currentTimeMillis() / 1000;
+            return currentTime > exp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true; // Treat as expired if error occurs
+        }
     }
 
     private void navigator_drawer_function(){
@@ -165,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         to_resource_activity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(vn.edu.usth.connect.MainActivity.this, vn.edu.usth.connect.Resource.Resource_Activity.class);
+                Intent i = new Intent(vn.edu.usth.connect.MainActivity.this, CategoryActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -185,6 +247,12 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Update SharedPreferences to set isLoggedIn to false
+                SharedPreferences sharedPreferences = getSharedPreferences("ToLogin", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("IsLoggedIn", false);
+                editor.apply();
+
                 Fragment loginFragment = new vn.edu.usth.connect.Login.LoginFragment();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(android.R.id.content, loginFragment);
@@ -241,6 +309,17 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(android.R.id.content, loginFragment);
         transaction.commit();
+    }
+
+    // Fetch events every 10 minutes
+    private void scheduleEventFetchWorker() {
+        WorkRequest fetchEventsRequest = new PeriodicWorkRequest.Builder(FetchEventsWorker.class, 10, TimeUnit.MINUTES)
+                .build();
+
+        // Enqueue the work request using WorkManager
+        WorkManager.getInstance(this).enqueue(fetchEventsRequest);
+
+        Log.d("MainActivity", "Periodic event fetch worker scheduled.");
     }
 
 }

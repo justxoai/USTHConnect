@@ -1,15 +1,20 @@
 package vn.edu.usth.connect.Schedule.TimeTable.Hour;
 
 import android.content.Context;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,62 +40,38 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.hour_frame, parent, false);
 
-        setHour(convertView, event.time);
+        ListView eventListView = convertView.findViewById(R.id.eventListView);
+
+        convertView.setTag(event.getStartTime());
         setEvents(convertView, event.events);
 
         return convertView;
     }
 
-    private void setHour(View convertView, LocalTime time)
-    {
-        TextView timeTV = convertView.findViewById(R.id.timeTV);
-        timeTV.setText(CalenderUtils.formattedShortTime(time));
+
+    private void setEvents(View convertView, ArrayList<Event> events) {
+        LinearLayout eventsContainer = convertView.findViewById(R.id.eventsContainer);
+        eventsContainer.removeAllViews();
+
+        if(events.isEmpty()) {
+            return;
+        }
+
+        // Add event TextViews dynamically
+        for(int i = 0; i < events.size(); i++) {
+            Event event = events.get(i);
+            TextView eventTextView = createEventTextView(convertView.getContext());
+            setEvent(eventTextView, event);
+            eventsContainer.addView(eventTextView);
+        }
     }
 
-    private void setEvents(View convertView, ArrayList<Event> events)
-    {
-        TextView event1 = convertView.findViewById(R.id.event1);
-        TextView event2 = convertView.findViewById(R.id.event2);
-        TextView event3 = convertView.findViewById(R.id.event3);
-
-        if(events.size() == 0)
-        {
-            hideEvent(event1);
-            hideEvent(event2);
-            hideEvent(event3);
-        }
-        else if(events.size() == 1)
-        {
-            setEvent(event1, events.get(0));
-            hideEvent(event2);
-            hideEvent(event3);
-        }
-        else if(events.size() == 2)
-        {
-            setEvent(event1, events.get(0));
-            setEvent(event2, events.get(1));
-            hideEvent(event3);
-        }
-        else if(events.size() == 3)
-        {
-            setEvent(event1, events.get(0));
-            setEvent(event2, events.get(1));
-            setEvent(event3, events.get(2));
-        }
-        else
-        {
-            setEvent(event1, events.get(0));
-            setEvent(event2, events.get(1));
-            event3.setVisibility(View.VISIBLE);
-            String eventsNotShown = String.valueOf(events.size() - 2);
-            eventsNotShown += " More Events";
-            event3.setText(eventsNotShown);
-        }
-    }
 
     private void setEvent(TextView textView, Event event)
     {
-        textView.setText(event.getName());
+        String eventDetails = event.getEventName() + "\n" +
+                formatEventTime(event) + "\n" + event.getLocation();
+        textView.setText(eventDetails);
         textView.setVisibility(View.VISIBLE);
     }
 
@@ -99,4 +80,27 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
         tv.setVisibility(View.INVISIBLE);
     }
 
+    private String formatEventTime(Event event) {
+        // Format ISO_LOCAL_DATE_TIME format to our custom format
+        String startTime = event.getEventStartDateTime().toLocalTime().toString();
+        String endTime = event.getEventEndDateTime().toLocalTime().toString();
+        return startTime + " - " + endTime;
+    }
+
+    // Helper method to create a TextView dynamically
+    private TextView createEventTextView(Context context) {
+        TextView textView = new TextView(context);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(8, 8, 8, 8);
+        textView.setLayoutParams(layoutParams);
+        textView.setPadding(8, 8, 8, 8);
+        textView.setBackgroundResource(R.color.blue);
+        textView.setTextColor(context.getResources().getColor(R.color.white));
+        textView.setTextSize(18);
+        textView.setGravity(Gravity.START);
+        return textView;
+    }
 }

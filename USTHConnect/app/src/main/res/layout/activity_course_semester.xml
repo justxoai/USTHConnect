@@ -22,7 +22,7 @@
             android:padding="8dp">
 
             <ImageButton
-                android:id="@+id/ba_button"
+                android:id="@+id/back_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentStart="true"

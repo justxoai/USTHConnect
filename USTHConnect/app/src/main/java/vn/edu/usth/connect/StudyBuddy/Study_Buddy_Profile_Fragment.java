@@ -19,6 +19,7 @@ public class Study_Buddy_Profile_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_study__buddy__profile_, container, false);
 
+        // Button Function
         setup_function(v);
 
         return v;
