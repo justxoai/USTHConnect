@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/background"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <!-- Button -->
             <LinearLayout
@@ -42,9 +43,9 @@
                     android:id="@+id/weeklyAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:backgroundTint="@color/blue_usth"
                     android:text="Week"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -63,8 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/back"
-                    android:textColor="#ffffff"
-                    android:background="@null"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/red_usth"
                     android:textStyle="bold"
                     android:onClick="previousMonthAction"
                     android:textSize="20sp"/>
@@ -85,8 +86,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/forward"
-                    android:textColor="#ffffff"
-                    android:background="@null"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/red_usth"
                     android:textStyle="bold"
                     android:onClick="nextMonthAction"
                     android:textSize="20sp"/>

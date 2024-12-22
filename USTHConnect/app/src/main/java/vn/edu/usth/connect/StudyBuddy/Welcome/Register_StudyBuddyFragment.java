@@ -48,12 +48,14 @@ public class Register_StudyBuddyFragment extends Fragment {
             String password = user_password.getText().toString();
 
             if (!email.isEmpty() && !password.isEmpty()){
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ToRegister12", getContext().MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ToRegister12345678904", getContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("IsRegister", true);
                 editor.apply();
 
                 Intent i = new Intent(getActivity(), Study_Buddy_Activity.class);
+                i.putExtra("sip_username", email);
+                i.putExtra("sip_password", password);
                 startActivity(i);
                 getActivity().finish();
             }

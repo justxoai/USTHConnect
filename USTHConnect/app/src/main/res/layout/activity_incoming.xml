@@ -16,9 +16,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
             <!-- Incoming Call -->
-        <EditText
+        <TextView
             android:id="@+id/incoming_remote_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

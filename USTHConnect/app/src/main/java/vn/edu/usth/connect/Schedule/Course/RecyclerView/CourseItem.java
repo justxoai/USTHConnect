@@ -12,11 +12,6 @@ public class CourseItem {
         this.isFavourite = isFavourite;
     }
 
-    public CourseItem(String subhead, String heading) {
-        this.subhead = subhead;
-        this.heading = heading;
-    }
-
     public boolean isFavourite() {
         return isFavourite;
     }

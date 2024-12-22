@@ -1,7 +1,7 @@
 package vn.edu.usth.connect.StudyBuddy.Audio;
 
 import android.os.Bundle;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +20,6 @@ public class IncomingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_incoming);
-
 
         Factory factory = Factory.instance();
         factory.setDebugMode(true, "Hello Linphone");
@@ -78,7 +77,7 @@ public class IncomingActivity extends AppCompatActivity {
                     case IncomingReceived:
                         findViewById(R.id.incoming_hang_up).setEnabled(true);
                         findViewById(R.id.incoming_answer).setEnabled(true);
-                        ((EditText) findViewById(R.id.incoming_remote_address)).setText(call.getRemoteAddress().getUsername());
+                        ((TextView) findViewById(R.id.incoming_remote_address)).setText(call.getRemoteAddress().getUsername());
                         break;
                     case Connected:
                         findViewById(R.id.incoming_mute_mic).setEnabled(true);
@@ -89,7 +88,7 @@ public class IncomingActivity extends AppCompatActivity {
                         findViewById(R.id.incoming_answer).setEnabled(false);
                         findViewById(R.id.incoming_mute_mic).setEnabled(false);
                         findViewById(R.id.incoming_toggle_speaker).setEnabled(false);
-                        ((EditText) findViewById(R.id.incoming_remote_address)).getText().clear();
+                        ((TextView) findViewById(R.id.incoming_remote_address)).setText("");
                         break;
                 }
             }

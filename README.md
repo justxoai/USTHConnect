@@ -6,6 +6,11 @@
 - OutgoingCall Function
 - Basic Chat (except UI)
 
+### Update:
+- SearchView in Message and Contact
+- OutgoingCall rework
+- Update IncomingCall in StudyBuddy (to test)
+
 ### In Progress:
 - StudyBuddy UI: test slidingPaneLayout
 
@@ -16,6 +21,4 @@
 - Advance Chat 
 
 ### Test:
-- Call Function 
-    + Test: Set RegisterStudyBuddy Fragment to test
-    
+- Call Function: PushNotification    

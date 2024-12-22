@@ -3,7 +3,6 @@ package vn.edu.usth.connect.StudyBuddy.Audio;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,8 +28,6 @@ import org.linphone.core.RegistrationState;
 import org.linphone.core.TransportType;
 
 import vn.edu.usth.connect.R;
-import vn.edu.usth.connect.StudyBuddy.Audio.PushNoti.CallService;
-import vn.edu.usth.connect.StudyBuddy.Audio.PushNoti.MyApplication;
 
 public class OutgoingCall extends AppCompatActivity {
 
@@ -40,7 +37,6 @@ public class OutgoingCall extends AppCompatActivity {
     private String password; // Password of Sip Account
 
     private String box_chat;
-    public String domain = "sip.linphone.org";
 
     // Button
     private Button hang_up_button, pause_button, toggle_video_button, toggle_camera_button;
@@ -52,8 +48,6 @@ public class OutgoingCall extends AppCompatActivity {
         // activity_outgoing_call.xml
         setContentView(R.layout.activity_outgoing_call);
 
-        MyApplication app = (MyApplication) getApplicationContext();
-        core = app.getLinphoneCore();
         // Get username, password, boxChat name
         Intent intent = getIntent();
         username = intent.getStringExtra("sip_username");
@@ -61,7 +55,11 @@ public class OutgoingCall extends AppCompatActivity {
         box_chat = intent.getStringExtra("Contact_Name");
 
         // Create Function & Core:
+        // Outgoing call
+        Factory factory = Factory.instance();
+        core = factory.createCore(null, null, this);
 
+        // Login Outgoing
         login(username, password);
 
         // Setup Video Cam
@@ -72,9 +70,6 @@ public class OutgoingCall extends AppCompatActivity {
 
         core.getVideoActivationPolicy().setAutomaticallyAccept(true);
 
-        // Call Function
-        outgoingCall();
-
         // Set Audio Name
         TextView textView = findViewById(R.id.outgoing_remote_address);
         textView.setText(box_chat);
@@ -82,7 +77,7 @@ public class OutgoingCall extends AppCompatActivity {
         // Outgoing Call Function
         // Hangup Button
         hang_up_button = findViewById(R.id.outgoing_hang_up);
-        hang_up_button.setEnabled(true);;
+        hang_up_button.setEnabled(false);;
         hang_up_button.setOnClickListener(view -> {
             hangUp();
         });
@@ -112,30 +107,21 @@ public class OutgoingCall extends AppCompatActivity {
     // Outgoing CoreListener
     private final CoreListenerStub outgoingCallCoreListener = new CoreListenerStub() {
         @Override
-        public void onAccountRegistrationStateChanged(Core core, Account account, RegistrationState state, String message) {}
+        public void onAccountRegistrationStateChanged(Core core, Account account, RegistrationState state, String message) {
+            if (state == RegistrationState.Ok) {
+                outgoingCall();
+                hang_up_button.setEnabled(true);;
+            }
+        }
 
         // Call to another User
         // When connected
         @Override
         public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
             if (state == Call.State.OutgoingInit) {
-            } else if (state == Call.State.IncomingReceived) {
-                Intent serviceIntent = new Intent(OutgoingCall.this, CallService.class);
-                serviceIntent.putExtra("username", username);
-                serviceIntent.putExtra("password", password);
-                serviceIntent.putExtra("domain", domain);
-                serviceIntent.putExtra("transport_type", TransportType.Tls);
-                serviceIntent.putExtra("remote user", call.getRemoteAddress().getUsername());
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(serviceIntent);
-                } else {
-                    startService(serviceIntent);
-                }
-            }
-            else if (state == Call.State.StreamsRunning) {
+            } else if (state == Call.State.StreamsRunning) {
                 // While Call
-                // Enable to pause call 
+                // Enable to pause call
                 pause_button.setEnabled(true);
                 pause_button.setText("Pause");
 
@@ -255,7 +241,7 @@ public class OutgoingCall extends AppCompatActivity {
 
     // Login Button
     private void login(String username, String password) {
-        domain = "sip.linphone.org";
+        String domain = "sip.linphone.org";
         AuthInfo authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null);
 
         Address identity = Factory.instance().createAddress("sip:" + username + "@" + domain);

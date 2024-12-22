@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import org.linphone.core.Core;
+
 import java.util.ArrayList;
 import java.util.List;
 

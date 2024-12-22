@@ -48,6 +48,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder>{
             notifyItemChanged(position);
             favouriteClickListener.onFavouriteClicked(item);
         });
+
         holder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(context, List_Class_in_Course_Activity.class);
             i.putExtra("Course Name", item.getHeading());
