@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Schedule.Course_RecyclerView;
+package vn.edu.usth.connect.Schedule.ScheduleCourse_RecyclerView;
 
 import android.view.View;
 import android.widget.TextView;
@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import vn.edu.usth.connect.R;
 
-public class Course_course_ViewHolder extends RecyclerView.ViewHolder{
+public class ScheduleCourseViewHolder extends RecyclerView.ViewHolder{
 
     TextView heading;
 
-    public Course_course_ViewHolder(@NonNull View itemView){
+    public ScheduleCourseViewHolder(@NonNull View itemView){
         super(itemView);
         heading = itemView.findViewById(R.id.first_text);
     }

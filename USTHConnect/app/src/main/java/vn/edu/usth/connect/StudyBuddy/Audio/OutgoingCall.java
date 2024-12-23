@@ -54,7 +54,7 @@ public class OutgoingCall extends AppCompatActivity {
         password = intent.getStringExtra("sip_password");
         box_chat = intent.getStringExtra("Contact_Name");
 
-        // Create Function & Core:
+        // Create Factory & Core:
         // Outgoing call
         Factory factory = Factory.instance();
         core = factory.createCore(null, null, this);
@@ -151,9 +151,7 @@ public class OutgoingCall extends AppCompatActivity {
 
                 pause_button.setText("Pause");
 
-                // Test: Hangup from incoming call
-//                onBackPressed();
-//                finish();
+                finish();
             }
         }
     };

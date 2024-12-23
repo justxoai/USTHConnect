@@ -1,6 +1,7 @@
 package vn.edu.usth.connect.StudyBuddy.Audio;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView;
 
@@ -15,80 +16,110 @@ import org.linphone.core.*;
 public class IncomingActivity extends AppCompatActivity {
 
     private Core core;
+
+    private String username; // Username of Sip Account
+    private String password; // Password of Sip Account
+
+    private String domain;
+
+    private Button hang_up, answer, mute_mic, toogle_speaker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // activity_incoming.xml
         setContentView(R.layout.activity_incoming);
 
+        // Create Factory and Core
+        // IncomingCall
         Factory factory = Factory.instance();
-        factory.setDebugMode(true, "Hello Linphone");
         core = factory.createCore(null, null, this);
 
-        String username = getIntent().getStringExtra("username");
-        String password = getIntent().getStringExtra("password");
-        String domain = getIntent().getStringExtra("domain");
+        // Get username, password and domain
+        username = getIntent().getStringExtra("username");
+        password = getIntent().getStringExtra("password");
+        domain = getIntent().getStringExtra("domain");
 
+        // Check if username, password and domain getExtra not null
+        // then login
         if (username != null && !username.isEmpty() &&
                 password != null && !password.isEmpty() &&
                 domain != null && !domain.isEmpty()) {
             login(username, password, domain);
         }
 
-        findViewById(R.id.incoming_hang_up).setEnabled(false);
-        findViewById(R.id.incoming_answer).setEnabled(false);
-        findViewById(R.id.incoming_mute_mic).setEnabled(false);
-        findViewById(R.id.incoming_toggle_speaker).setEnabled(false);
-        findViewById(R.id.incoming_remote_address).setEnabled(false);
+        // Call ID
+        hang_up = findViewById(R.id.incoming_hang_up);
+        answer = findViewById(R.id.incoming_answer);
+        mute_mic = findViewById(R.id.incoming_mute_mic);
+        toogle_speaker = findViewById(R.id.incoming_toggle_speaker);
 
-        findViewById(R.id.incoming_hang_up).setOnClickListener(v -> {
+        // SetEnable
+        hang_up.setEnabled(false);
+        answer.setEnabled(false);
+        mute_mic.setEnabled(false);
+        toogle_speaker.setEnabled(false);
+
+        // Setup Function
+        hang_up.setOnClickListener(v -> {
             if (core.getCurrentCall() != null) {
                 core.getCurrentCall().terminate();
             }
         });
 
-        findViewById(R.id.incoming_answer).setOnClickListener(v -> {
+        answer.setOnClickListener(v -> {
             if (core.getCurrentCall() != null) {
                 core.getCurrentCall().accept();
             }
         });
 
-        findViewById(R.id.incoming_mute_mic).setOnClickListener(v -> {
+        mute_mic.setOnClickListener(v -> {
             core.enableMic(!core.micEnabled());
         });
 
-        findViewById(R.id.incoming_toggle_speaker).setOnClickListener(v -> toggleSpeaker());
+        toogle_speaker.setOnClickListener(v -> toggleSpeaker());
     }
 
+    // Incoming CoreListener
     private final CoreListenerStub coreListener = new CoreListenerStub() {
         @Override
         public void onAudioDeviceChanged(Core core, AudioDevice audioDevice) {
         }
 
-        @Override
-        public void onAudioDevicesListUpdated(Core core) {
-        }
-
+        // Received a call from another User
+        // When connected
         @Override
         public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
 
+            // Call Received
             if (state != null) {
                 switch (state) {
                     case IncomingReceived:
-                        findViewById(R.id.incoming_hang_up).setEnabled(true);
-                        findViewById(R.id.incoming_answer).setEnabled(true);
-                        ((TextView) findViewById(R.id.incoming_remote_address)).setText(call.getRemoteAddress().getUsername());
+                        // Enable Button
+                        hang_up.setEnabled(true);
+                        answer.setEnabled(true);
+
+                        // Set TextView
+                        TextView contact_name = findViewById(R.id.incoming_remote_address);
+                        contact_name.setText(call.getRemoteAddress().getUsername());
                         break;
                     case Connected:
-                        findViewById(R.id.incoming_mute_mic).setEnabled(true);
-                        findViewById(R.id.incoming_toggle_speaker).setEnabled(true);
+                        // Enable Button
+                        mute_mic.setEnabled(true);
+                        toogle_speaker.setEnabled(true);
+
+                        answer.setEnabled(false);
+
                         break;
                     case Released:
-                        findViewById(R.id.incoming_hang_up).setEnabled(false);
-                        findViewById(R.id.incoming_answer).setEnabled(false);
-                        findViewById(R.id.incoming_mute_mic).setEnabled(false);
-                        findViewById(R.id.incoming_toggle_speaker).setEnabled(false);
-                        ((TextView) findViewById(R.id.incoming_remote_address)).setText("");
+                        // Disable Button
+                        hang_up.setEnabled(false);
+                        mute_mic.setEnabled(false);
+                        toogle_speaker.setEnabled(false);
+
+                        // Set TextView
+                        TextView contact_name1 = findViewById(R.id.incoming_remote_address);
+                        contact_name1.setText("");
                         break;
                 }
             }

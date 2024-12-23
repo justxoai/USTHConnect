@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Schedule.Course.RecyclerView;
+package vn.edu.usth.connect.Schedule.Course.Course_RecyclerView;
 
 import android.view.View;
 import android.widget.ImageButton;

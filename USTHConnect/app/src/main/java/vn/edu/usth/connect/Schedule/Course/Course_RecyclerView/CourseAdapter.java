@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Schedule.Course.RecyclerView;
+package vn.edu.usth.connect.Schedule.Course.Course_RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import vn.edu.usth.connect.R;
-import vn.edu.usth.connect.Schedule.Course.List_Class_in_Course_Activity;
+import vn.edu.usth.connect.Schedule.Course.Event_RecyclerView.List_Class_in_Course_Activity;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder>{
 

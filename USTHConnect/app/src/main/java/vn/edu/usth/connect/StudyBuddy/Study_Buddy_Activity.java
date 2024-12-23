@@ -52,15 +52,6 @@ public class Study_Buddy_Activity extends AppCompatActivity {
     private ImageView avatar_profile_image;
     private Handler handler = new Handler();
 
-    private Core core;
-
-    private String username; // Username of Sip Account
-    private String password; // Password of Sip Account
-
-    private String contact;
-
-    private Button mute_mic, toggle_speak, answer, hang_up;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +59,13 @@ public class Study_Buddy_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_study_buddy);
 
         // SharedPreference for the 1st time
-//        SharedPreferences sharedPreferences = getSharedPreferences("ToRegister12345678904", MODE_PRIVATE);
-//        boolean isRegister = sharedPreferences.getBoolean("IsRegister", false);
-//
-//        if (!isRegister) {
-//            // Move to WelcomeFragment
-//            navigatorToRegister();
-//        }
+        SharedPreferences sharedPreferences = getSharedPreferences("ToRegister12345678999", MODE_PRIVATE);
+        boolean isRegister = sharedPreferences.getBoolean("IsRegister", false);
+
+        if (!isRegister) {
+            // Move to WelcomeFragment
+            navigatorToRegister();
+        }
 
         // ViewPager2: Change fragments: MessageFragment, StudyBuddyFragment, StudyBuddyProfileFragment
         mviewPager = findViewById(R.id.view_study_buddy_pager);
@@ -163,151 +154,6 @@ public class Study_Buddy_Activity extends AppCompatActivity {
         // Load image in the Side-menu
         update_picture();
 
-        // Test IncomingCall
-        // GetString
-        Intent intent = getIntent();
-        username = intent.getStringExtra("sip_username");
-        password = intent.getStringExtra("sip_password");
-        contact  = intent.getStringExtra("Contact_Name");
-
-        // Create Function & Core
-        // IncomingCall
-        Factory incoming_factory = Factory.instance();
-        core = incoming_factory.createCore(null, null, this);
-
-        // Login BocChat, Incoming, Outgoing
-        login(username, password);
-
-        // Incoming Call Function
-        // Call ID
-        hang_up = findViewById(R.id.incoming_hang_up);
-        answer = findViewById(R.id.incoming_answer);
-        mute_mic = findViewById(R.id.incoming_mute_mic);
-        toggle_speak = findViewById(R.id.incoming_toggle_speaker);
-
-        // Button Enable
-        hang_up.setEnabled(false);
-        answer.setEnabled(false);
-        mute_mic.setEnabled(false);
-        toggle_speak.setEnabled(false);
-
-        // Button Function
-        hang_up.setOnClickListener(view -> {
-            if (core.getCurrentCall() != null) {
-                core.getCurrentCall().terminate();
-            }
-        });
-
-        answer.setOnClickListener(view -> {
-            if (core.getCurrentCall() != null) {
-                core.getCurrentCall().accept();
-            }
-        });
-
-        mute_mic.setOnClickListener(view -> {
-            core.enableMic(!core.micEnabled());
-        });
-
-        toggle_speak.setOnClickListener(view -> {
-            toggleSpeaker();
-        });
-
-    }
-
-    // Incoming CoreListener
-    private final CoreListenerStub incomingCallCoreListener = new CoreListenerStub() {
-        @Override
-        public void onAccountRegistrationStateChanged(Core core, Account account, RegistrationState state, String message) {}
-
-        // Received a call from another User
-        // When connected
-        @Override
-        public void onCallStateChanged(Core core, Call call, Call.State state, String message) {
-            findViewById(R.id.sb_layout).setVisibility(View.GONE);
-
-            // When a call is received
-            if (state == Call.State.IncomingReceived) {
-                // Incoming call Visible, Hide Sb Layout
-                findViewById(R.id.incoming_call_layout).setVisibility(View.VISIBLE);
-
-                // Enable HangUp and Answer Button
-                hang_up.setEnabled(true);
-                answer.setEnabled(true);
-
-                // Set TextView
-                TextView contact_name = findViewById(R.id.incoming_remote_address);
-                contact_name.setText(call.getRemoteAddress().getUsername());
-            } else if (state == Call.State.Connected) {
-                // Visible Button
-                toggle_speak.setVisibility(View.VISIBLE);
-                mute_mic.setVisibility(View.VISIBLE);
-
-                // Enable mic and speaker
-                mute_mic.setEnabled(true);
-                toggle_speak.setEnabled(true);
-            } else if (state == Call.State.Released) {
-                findViewById(R.id.incoming_call_layout).setVisibility(View.GONE);
-                findViewById(R.id.sb_layout).setVisibility(View.VISIBLE);
-            }
-        }
-    };
-
-    // Incoming toggleSpeaker
-    private void toggleSpeaker() {
-        // Get the currently used audio device
-        AudioDevice currentAudioDevice = core.getCurrentCall() != null ? core.getCurrentCall().getOutputAudioDevice() : null;
-        boolean speakerEnabled = currentAudioDevice != null && currentAudioDevice.getType() == AudioDevice.Type.Speaker;
-
-        // We can get a list of all available audio devices using
-        // Note that on tablets for example, there may be no Earpiece device
-        for (AudioDevice audioDevice : core.getAudioDevices()) {
-            if (speakerEnabled && audioDevice.getType() == AudioDevice.Type.Earpiece) {
-                if (core.getCurrentCall() != null) {
-                    core.getCurrentCall().setOutputAudioDevice(audioDevice);
-                }
-                return;
-            } else if (!speakerEnabled && audioDevice.getType() == AudioDevice.Type.Speaker) {
-                if (core.getCurrentCall() != null) {
-                    core.getCurrentCall().setOutputAudioDevice(audioDevice);
-                }
-                return;
-            }
-        }
-    }
-
-    // Incoming Login
-    private void login(String username, String password) {
-        String domain = "sip.linphone.org";
-
-        TransportType transportType = TransportType.Tls;
-
-        AuthInfo authInfo = Factory.instance().createAuthInfo(username, null, password, null, null, domain, null);
-
-        AccountParams params = core.createAccountParams();
-        Address identity = Factory.instance().createAddress("sip:" + username + "@" + domain);
-        params.setIdentityAddress(identity);
-
-        Address address = Factory.instance().createAddress("sip:" + domain);
-        if (address != null) {
-            address.setTransport(transportType);
-        }
-
-        params.setServerAddress(address);
-        params.setRegisterEnabled(true);
-
-        Account account = core.createAccount(params);
-
-        core.addAuthInfo(authInfo);
-        core.addAccount(account);
-
-        core.setDefaultAccount(account);
-        core.addListener(incomingCallCoreListener);
-        core.start();
-
-        // We will need the RECORD_AUDIO permission for video call
-        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 0);
-        }
     }
 
     private void navigator_drawer_function() {
@@ -418,7 +264,7 @@ public class Study_Buddy_Activity extends AppCompatActivity {
     // Use for test
     // WelcomeFrag -> RegisterFrag
     private void navigatorToRegister() {
-        Fragment welcomeFragment = new WelcomeFragment();
+        Fragment welcomeFragment = new Register_StudyBuddyFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(android.R.id.content, welcomeFragment);
         fragmentTransaction.addToBackStack(null);

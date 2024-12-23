@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Schedule.Course.RecyclerView;
+package vn.edu.usth.connect.Schedule.ScheduleCourse_RecyclerView;
 
 import android.os.Bundle;
 
@@ -17,13 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.usth.connect.R;
-import vn.edu.usth.connect.Schedule.Course_RecyclerView.Course_course_Adapter;
-import vn.edu.usth.connect.Schedule.Course_RecyclerView.Course_course_Item;
 
-public class Course_Fragment extends Fragment {
+public class ScheduleCourseFragment extends Fragment {
 
-    private List<Course_course_Item> items;
-    private Course_course_Adapter adapter;
+    private List<ScheduleCourseItem> items;
+    private ScheduleCourseAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,23 +43,23 @@ public class Course_Fragment extends Fragment {
         // Course.Program_Activity
         RecyclerView recyclerView = v.findViewById(R.id.course_course_recyclerview);
 
-        items = new ArrayList<Course_course_Item>();
+        items = new ArrayList<ScheduleCourseItem>();
 
-        items.add(new Course_course_Item("First Year - Sciences (three-year program)"));
-        items.add(new Course_course_Item("Information and Communication Technology"));
-        items.add(new Course_course_Item("Pharmacological Medical and Agronomical Biotechnology"));
-        items.add(new Course_course_Item("Advanced Materials Science and Nanotechnology"));
-        items.add(new Course_course_Item("Applied Engineering and Technology (AET)"));
-        items.add(new Course_course_Item("Applied Environmental Sciences"));
-        items.add(new Course_course_Item("Space and Applications"));
-        items.add(new Course_course_Item("Medical Science and Technology (MST)"));
-        items.add(new Course_course_Item("Food Science and Technology (FST)"));
-        items.add(new Course_course_Item("Aeronautical Maintenance and Engineering"));
-        items.add(new Course_course_Item("Chemistry"));
-        items.add(new Course_course_Item("Applied Mathematics"));
+        items.add(new ScheduleCourseItem("First Year - Sciences (three-year program)"));
+        items.add(new ScheduleCourseItem("Information and Communication Technology"));
+        items.add(new ScheduleCourseItem("Pharmacological Medical and Agronomical Biotechnology"));
+        items.add(new ScheduleCourseItem("Advanced Materials Science and Nanotechnology"));
+        items.add(new ScheduleCourseItem("Applied Engineering and Technology (AET)"));
+        items.add(new ScheduleCourseItem("Applied Environmental Sciences"));
+        items.add(new ScheduleCourseItem("Space and Applications"));
+        items.add(new ScheduleCourseItem("Medical Science and Technology (MST)"));
+        items.add(new ScheduleCourseItem("Food Science and Technology (FST)"));
+        items.add(new ScheduleCourseItem("Aeronautical Maintenance and Engineering"));
+        items.add(new ScheduleCourseItem("Chemistry"));
+        items.add(new ScheduleCourseItem("Applied Mathematics"));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new Course_course_Adapter(requireContext(), items);
+        adapter = new ScheduleCourseAdapter(requireContext(), items);
         recyclerView.setAdapter(adapter);
 
         // SearchView
@@ -85,9 +83,9 @@ public class Course_Fragment extends Fragment {
 
     // Filter for SearchView
     private void filterList(String text) {
-        List<Course_course_Item> filteredItems = new ArrayList<>();
+        List<ScheduleCourseItem> filteredItems = new ArrayList<>();
 
-        for (Course_course_Item item : items) {
+        for (ScheduleCourseItem item : items) {
             if (item.getHeading().toLowerCase().contains(text.toLowerCase())) {
                 filteredItems.add(item);
             }

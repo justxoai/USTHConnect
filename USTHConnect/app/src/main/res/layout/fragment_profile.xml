@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/profile_page"
-    tools:context=".Home.ProfileFragment">
+    tools:context=".Home.EditProfile.ProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

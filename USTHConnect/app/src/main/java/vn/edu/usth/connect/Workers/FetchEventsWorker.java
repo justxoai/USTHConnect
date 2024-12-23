@@ -33,6 +33,7 @@ public class FetchEventsWorker extends Worker {
 
         // Fetch token and studentId from SharedPreferences
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("ToLogin", Context.MODE_PRIVATE);
+
         String token = sharedPreferences.getString("Token", "");
         String studentId = sharedPreferences.getString("StudentId", "");
 
@@ -53,6 +54,11 @@ public class FetchEventsWorker extends Worker {
                         String studyYear = currentStudent.getStudyYear();
                         String major = currentStudent.getMajor();
                         Integer organizerId = calculateOrganizerId(studyYear, major);
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("StudyYear", studyYear);
+                        editor.putString("Major", major);
+                        editor.apply();
 
                         // Fetch events for the student
                         fetchEvents(authHeader, organizerId);

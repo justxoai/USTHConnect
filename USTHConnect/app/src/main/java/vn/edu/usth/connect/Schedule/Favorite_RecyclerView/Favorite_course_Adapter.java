@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import vn.edu.usth.connect.R;
-import vn.edu.usth.connect.Schedule.Course.List_Class_in_Course_Activity;
+import vn.edu.usth.connect.Schedule.Course.Event_RecyclerView.List_Class_in_Course_Activity;
 
 public class Favorite_course_Adapter extends RecyclerView.Adapter<Favorite_course_ViewHolder> {
 

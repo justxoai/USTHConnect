@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import vn.edu.usth.connect.Home.EditProfile.ProfileFragment;
 import vn.edu.usth.connect.Home.NotificationRecyclerView.NotificationFragment;
 
 public class Fragment_home_changing  extends FragmentStateAdapter {

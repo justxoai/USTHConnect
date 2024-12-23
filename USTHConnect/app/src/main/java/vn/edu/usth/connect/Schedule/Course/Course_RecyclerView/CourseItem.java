@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Schedule.Course.RecyclerView;
+package vn.edu.usth.connect.Schedule.Course.Course_RecyclerView;
 
 public class CourseItem {
 

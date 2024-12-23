@@ -1,10 +1,10 @@
-package vn.edu.usth.connect.Schedule.Course_RecyclerView;
+package vn.edu.usth.connect.Schedule.ScheduleCourse_RecyclerView;
 
-public class Course_course_Item {
+public class ScheduleCourseItem {
 
     String heading;
 
-    public Course_course_Item(String heading){
+    public ScheduleCourseItem(String heading){
         this.heading = heading;
     }
 

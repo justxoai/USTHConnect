@@ -1,4 +1,4 @@
-package vn.edu.usth.connect.Home;
+package vn.edu.usth.connect.Home.EditProfile;
 
 import android.app.ProgressDialog;
 import android.content.Context;

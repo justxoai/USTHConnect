@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Event {
 
@@ -47,6 +48,48 @@ public class Event {
 
         return events;
     }
+
+    // Function to filter the events based on the course name
+//    public static ArrayList<Event> eventsForCourse(String courseName) {
+//        ArrayList<Event> filteredEvent = new ArrayList<>();
+//        for(Event event: eventsList) {
+//            if (event.getEventName().toLowerCase().contains(courseName.toLowerCase())) {
+//                filteredEvent.add(event);
+//            }
+//        }
+//        return filteredEvent;
+//    }
+
+    public static ArrayList<Event> eventsForCourse(String courseName) {
+        // Check if courseName is null or empty
+        if (courseName == null || courseName.isEmpty()) {
+            Log.d("Event", "Course name is null or empty. Returning empty list.");
+            return new ArrayList<>();
+        }
+
+        // Convert the course name to lowercase once
+        String courseNameLowerCase = courseName.toLowerCase();
+
+        // Start measuring execution time
+        long startTime = System.currentTimeMillis();
+
+        // Filter the events
+        ArrayList<Event> filteredEvents = new ArrayList<>();
+        for (Event event : eventsList) {
+            if (event.getEventName().toLowerCase().contains(courseNameLowerCase)) {
+                filteredEvents.add(event);
+            }
+        }
+
+        // Log execution time and results
+        long endTime = System.currentTimeMillis();
+        Log.d("Event", "Filtered " + filteredEvents.size() + " events for course: " + courseName +
+                " in " + (endTime - startTime) + " ms");
+
+        return filteredEvents;
+    }
+
+
 
     private Integer eventId;
     private String eventName;
@@ -136,46 +179,4 @@ public class Event {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         return LocalDateTime.parse(this.eventEnd, formatter);
     }
-    // EventItem
-//    private String name;
-//    private LocalDate date;
-//    private LocalTime time;
-//
-//    public Event(String name, LocalDate date, LocalTime time)
-//    {
-//        this.name = name;
-//        this.date = date;
-//        this.time = time;
-//    }
-//
-//    public String getName()
-//    {
-//        return name;
-//    }
-//
-//    public void setName(String name)
-//    {
-//        this.name = name;
-//    }
-//
-//    public LocalDate getDate()
-//    {
-//        return date;
-//    }
-//
-//    public void setDate(LocalDate date)
-//    {
-//        this.date = date;
-//    }
-//
-//    public LocalTime getTime()
-//    {
-//        return time;
-//    }
-//
-//    public void setTime(LocalTime time)
-//    {
-//        this.time = time;
-//    }
-
 }

@@ -47,6 +47,7 @@ public class LoginFragment extends Fragment {
         editTextPassword = view.findViewById(R.id.editTextPassword);
         buttonLogin = view.findViewById(R.id.login_button);
 
+
         // Remember Login using SharePreference
         buttonLogin.setOnClickListener(v -> {
             String email = editTextEmail.getText().toString();
@@ -84,7 +85,6 @@ public class LoginFragment extends Fragment {
                     editor.putString("Token", token);
                     editor.putString("StudentId", username);
                     editor.apply();
-
                     // Redirect to MainActivity
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);

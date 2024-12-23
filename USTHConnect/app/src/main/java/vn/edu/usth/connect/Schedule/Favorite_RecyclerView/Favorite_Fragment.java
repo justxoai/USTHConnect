@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +19,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import vn.edu.usth.connect.R;
-import vn.edu.usth.connect.Schedule.Course.First_Course_Activity;
-import vn.edu.usth.connect.Schedule.Course.RecyclerView.CourseAdapter;
-import vn.edu.usth.connect.Schedule.Course.RecyclerView.CourseItem;
-import vn.edu.usth.connect.Schedule.Course.Second_Course_Activity;
-import vn.edu.usth.connect.Schedule.Course.Third_Course_Activity;
-import vn.edu.usth.connect.Schedule.Favorite_RecyclerView.Favorite_course_Adapter;
-import vn.edu.usth.connect.Schedule.Favorite_RecyclerView.Favorite_course_Item;
+import vn.edu.usth.connect.Schedule.Course.Course_RecyclerView.CourseItem;
 
 public class Favorite_Fragment extends Fragment {
 

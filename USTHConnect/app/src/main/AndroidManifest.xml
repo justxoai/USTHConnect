@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:name=".StudyBuddy.Audio.PushNoti.MyApplication"
@@ -36,9 +37,6 @@
         android:theme="@style/Theme.USTHConnect"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".StudyBuddy.Audio.Incoming"
-            android:exported="false" />
         <activity
             android:name=".StudyBuddy.SB_RecyclerView.Detail.UserDetailActivity"
             android:exported="false" />
@@ -67,9 +65,6 @@
             android:name=".Resource.ResourceRecyclerView.ResourceActivity"
             android:exported="false" />
         <activity
-            android:name=".Schedule.Course.First_Course_Activity"
-            android:exported="false" />
-        <activity
             android:name=".StudyBuddy.EditProfile.Edit_SB_Profile_Activity"
             android:exported="false" />
         <activity
@@ -91,16 +86,7 @@
             android:name=".Campus.Detail.Detail_Building_Activity"
             android:exported="false" />
         <activity
-            android:name=".Schedule.Course.Second_Course_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Schedule.Course.Third_Course_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Schedule.Course.List_Class_in_Course_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Schedule.Course.Program_Activity"
+            android:name=".Schedule.Course.Event_RecyclerView.List_Class_in_Course_Activity"
             android:exported="false" />
         <activity
             android:name=".Home.EditProfile.Edit_Profile_Activity"
@@ -136,8 +122,15 @@
             android:foregroundServiceType="phoneCall"
             android:permission="android.permission.FOREGROUND_SERVICE" />
 
+        <service
+            android:name=".Home.EventNotificationService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync"
+            android:permission="android.permission.FOREGROUND_SERVICE" />
+
         <receiver
             android:name=".StudyBuddy.Audio.PushNoti.PushBroadcastReceiver"
+
             android:exported="false">
             <intent-filter>
                 <action android:name="org.linphone.core.action.PUSH_RECEIVED" />

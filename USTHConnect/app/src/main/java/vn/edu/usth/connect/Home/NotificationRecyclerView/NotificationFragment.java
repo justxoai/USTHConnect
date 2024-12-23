@@ -1,6 +1,7 @@
 package vn.edu.usth.connect.Home.NotificationRecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.edu.usth.connect.Home.EventNotificationService;
 import vn.edu.usth.connect.Models.Notification;
 import vn.edu.usth.connect.Models.Student.Student;
 import vn.edu.usth.connect.Network.NotificationService;
@@ -42,7 +44,7 @@ public class NotificationFragment extends Fragment {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable fetchNotificationsRunnable;
 
-    private static final int FETCH_INTERVAL = 60000; // 10 mins
+    private static final int FETCH_INTERVAL = 60000; // 1 minute
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,6 +149,7 @@ public class NotificationFragment extends Fragment {
 
                     Log.d("NotificationFragment", "Fetched " + notificationList.size() + " notifications");
                     adapter.updateNotifications(notificationList);
+
                     // Check if the notifications are different from the previous ones
                     if (notificationsHaveChanged(notificationList, previousNotificationList)) {
                         // Update the adapter with new notifications
@@ -154,7 +157,12 @@ public class NotificationFragment extends Fragment {
 
                         // Trigger notification for the user if there are new notifications
                         if (getActivity() != null) {
-                            NotificationUtils.showNotification(getActivity(), "New Notification", "There are some event changes.");
+                            // Pass notification details to the service to show the notification
+                            Notification latestNotification = notificationList.get(0);  // Assuming the most recent notification
+                            Intent serviceIntent = new Intent(getActivity(), EventNotificationService.class);
+                            serviceIntent.putExtra("notification_message", latestNotification.getMessage());
+                            serviceIntent.putExtra("created_at", latestNotification.getCreatedAt());
+                            getActivity().startService(serviceIntent);
                         }
 
                         // Update the previous notification list to the current list
@@ -166,7 +174,6 @@ public class NotificationFragment extends Fragment {
                     Log.e("NotificationFragment", "Failed to fetch notifications, response code: " + response.code());
                 }
             }
-
 
             @Override
             public void onFailure(Call<List<Notification>> call, Throwable t) {
@@ -194,12 +201,13 @@ public class NotificationFragment extends Fragment {
 
         return false; // No changes detected
     }
+
     // Calculate OrganizerID dynamically based on StudyYear and Major
     private int calculateOrganizerId(String studyYear, String major) {
         if ("ICT".equalsIgnoreCase(major)) {
             switch (studyYear) {
                 case "B2":
-                    return 691;
+                    return 686;
                 case "B3":
                     return 2;
             }

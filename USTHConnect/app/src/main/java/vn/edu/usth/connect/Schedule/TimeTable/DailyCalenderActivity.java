@@ -22,7 +22,7 @@ import vn.edu.usth.connect.Schedule.TimeTable.Event.Event;
 import vn.edu.usth.connect.Schedule.TimeTable.Hour.HourAdapter;
 import vn.edu.usth.connect.Schedule.TimeTable.Hour.HourEvent;
 
-public class DailyCalenderActivity extends AppCompatActivity {
+public class  DailyCalenderActivity extends AppCompatActivity {
 
     private TextView monthDayText;
     private TextView dayOfWeekTV;
