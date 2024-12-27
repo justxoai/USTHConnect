@@ -1,5 +1,0 @@
-Café
-Home
-Library
-BookStore
-Online

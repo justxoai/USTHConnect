@@ -1,24 +1,22 @@
-### USTHConnect FrontEnd ###
+### USTHConnect Recommend System Model using Flask ###
 
-### Complete:
-- UI (except StudyBuddy)
-- Backend: 
-- OutgoingCall Function
-- Basic Chat (except UI)
+### Flask:
+-  Model Function:
++ trainning_model: Training Model
++ assign_cluster: Assign Cluster
++ recommend_cluster: Return Recommend Study Buddy in file JSON
 
-### Update:
-- SearchView in Message and Contact
-- OutgoingCall rework
-- Update IncomingCall in StudyBuddy (to test)
+- API Function:
++ train_model: /train 
+=> training model before load data and recommend
++ load_sample: /train/sample/.....
+=> load data to predict
++ recommend_model: /train/sample/.../recommend
+=> return json file of recommend list
 
-### In Progress:
-- StudyBuddy UI: test slidingPaneLayout
+### Recommend Model:
+- K_Elbow.py
+- Preprocessing
 
-- Update edit profile and profile StudyBuddy: upgrade to use picture in phone
-
-- PushNotification for Incoming Call: Quang
-
-- Advance Chat 
-
-### Test:
-- Call Function: PushNotification    
+### Dataset:
+- dataset.csv
